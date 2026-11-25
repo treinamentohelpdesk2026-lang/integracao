@@ -49,10 +49,10 @@
       -ms-overflow-style: none;
       color: var(--ink);
       line-height: 1.65;
-      background-color: #030614;
+      background-color: #000000;
       background-image:
-        radial-gradient(ellipse at 82% 32%, rgba(29, 78, 216, .14), transparent 36rem),
-        radial-gradient(ellipse at 18% 78%, rgba(14, 165, 233, .08), transparent 32rem);
+        radial-gradient(ellipse at 82% 32%, rgba(29, 78, 216, .12), transparent 36rem),
+        radial-gradient(ellipse at 18% 78%, rgba(14, 165, 233, .06), transparent 32rem);
       background-attachment: fixed, fixed;
     }
 
@@ -143,17 +143,51 @@
     }
 
     .topbar {
-      position: sticky;
-      z-index: 5;
-      top: 0;
+      position: fixed;
+      z-index: 60;
+      top: .85rem;
+      left: 50%;
+      width: min(880px, calc(100% - 1.5rem));
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
-      padding: .8rem clamp(1rem, 5vw, 4rem);
+      gap: .65rem 1rem;
+      padding: .5rem .75rem .5rem 1rem;
+      border-radius: 999px;
       color: white;
-      background: var(--navy);
-      box-shadow: 0 4px 18px rgba(11, 28, 54, .16);
+      background: rgba(8, 13, 30, .9);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(147, 197, 253, .2);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, .65);
+      opacity: 0;
+      transform: translateX(-50%) translateY(-135%);
+      pointer-events: none;
+      transition: opacity .35s ease, transform .35s cubic-bezier(.22, .61, .36, 1);
+    }
+    .topbar.is-visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+    .topbar-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: .48rem 1rem;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #090e1f;
+      font-size: .8rem;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: transform .18s ease, background .18s ease;
+    }
+    .topbar-cta:hover {
+      transform: translateY(-1px);
+      background: #dbeafe;
     }
     .brand { display: flex; align-items: center; gap: .65rem; font-weight: 850; letter-spacing: .12em; }
     .brand-logo {
@@ -175,81 +209,540 @@
     }
     .ui-icon-ok { color: #147d63; }
     .ui-icon-no { color: #dc2626; }
-    .topbar-note { color: #d3deed; font-size: .9rem; }
-
-    .hero {
-      position: relative;
-      display: grid;
-      width: min(990px, 100%);
-      min-height: 365px;
-      grid-template-columns: minmax(0, 1.12fr) minmax(290px, .88fr);
+    .topbar .module-picker {
+      display: flex;
       align-items: center;
-      gap: clamp(1.5rem, 4vw, 3rem);
-      overflow: hidden;
-      margin: 0 auto 1rem;
-      padding: clamp(1.4rem, 4vw, 2.5rem);
-      border-top: 3px solid #f01446;
-      border-radius: 0 0 1.1rem 1.1rem;
-      color: white;
-      background: radial-gradient(ellipse at 20% 5%, rgba(89, 135, 227, .26), transparent 34%),
-        linear-gradient(115deg, #1d3b76 0%, var(--navy) 62%, #35091e 100%);
-      box-shadow: 0 20px 34px rgba(18, 21, 68, .2);
+      gap: .45rem;
+      min-height: 0;
+      margin: 0;
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
-    .hero::after {
-      position: absolute;
-      right: 34%;
-      bottom: -14rem;
-      width: 30rem;
-      height: 30rem;
-      border: 1px solid rgba(255, 255, 255, .08);
-      border-radius: 50%;
-      box-shadow: 0 0 0 2.5rem rgba(255,255,255,.018), 0 0 0 5rem rgba(255,255,255,.014);
-      content: "";
-      pointer-events: none;
+    .topbar .module-picker::-webkit-scrollbar { display: none; }
+    .topbar .module-tab {
+      min-height: 2.25rem;
+      padding: .42rem .9rem;
+      border: 1px solid rgba(147, 197, 253, .22);
+      border-top: 1px solid rgba(147, 197, 253, .22);
+      border-radius: 999px;
+      color: #dbeafe;
+      background: rgba(15, 25, 68, .6);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all .2s ease;
     }
-    .hero-content { position: relative; z-index: 1; max-width: 510px; }
-    .eyebrow { color: #c1ccff; font-size: .7rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
-    .hero h1 { margin: .8rem 0 .75rem; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.14; letter-spacing: -.035em; }
-    .hero-title-accent { color: #7f91f3; }
-    .hero-description { max-width: 470px; margin: 0; color: #e0e8f7; font-size: .96rem; }
-    .hero-flow { margin-top: 1rem; color: #9dc8ff; font-size: .8rem; font-weight: 750; letter-spacing: .015em; }
-    .hero-logo-scene {
+    .topbar .module-tab:hover {
+      border-color: rgba(147, 197, 253, .55);
+      background: rgba(30, 58, 138, .55);
+    }
+    .topbar .module-tab strong { display: block; color: inherit; font-size: .8rem; font-weight: 750; }
+    .topbar .module-tab[aria-selected="true"] {
+      border-color: #f01446;
+      color: #ffffff;
+      background: linear-gradient(110deg, #e11d48, #be123c);
+      box-shadow: 0 4px 14px rgba(240, 20, 70, .35);
+    }
+
+    /* Cinematic Hero (full-screen pinned ScrollTrigger + iPhone mockup) */
+    .cinematic-hero {
       position: relative;
       z-index: 1;
-      display: grid;
-      min-height: 310px;
-      place-items: center;
-      margin: 0;
-      perspective: 900px;
-      isolation: isolate;
+      width: 100%;
+      height: 100vh;
+      min-height: 620px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000000;
+      perspective: 1500px;
     }
-    .hero-logo-scene::after {
+    .film-grain {
       position: absolute;
-      z-index: -1;
-      right: 12%;
-      bottom: 7%;
-      left: 12%;
-      height: 2rem;
-      border-radius: 50%;
-      background: rgba(3, 7, 28, .65);
-      content: "";
-      filter: blur(1.15rem);
-      transform: rotateX(58deg);
+      inset: 0;
+      pointer-events: none;
+      z-index: 50;
+      opacity: .05;
+      mix-blend-mode: overlay;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)"/></svg>');
     }
-    .hero-logo {
+    .bg-grid-theme {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: .45;
+      background-size: 60px 60px;
+      background-image:
+        linear-gradient(to right, rgba(147, 197, 253, .08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(147, 197, 253, .08) 1px, transparent 1px);
+      mask-image: radial-gradient(ellipse at center, black 0%, transparent 72%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 72%);
+    }
+    .hero-text-wrapper {
+      position: absolute;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 100%;
+      padding: 0 1.25rem;
+      will-change: transform;
+      transform-style: preserve-3d;
+    }
+    .eyebrow {
+      color: #bae6fd;
+      font-size: .82rem;
+      font-weight: 850;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-bottom: .75rem;
+      text-shadow: 0 0 18px rgba(56, 189, 248, .55);
+    }
+    .text-3d-matte {
+      margin: 0 0 .4rem;
+      font-size: clamp(2.1rem, 5.2vw, 4.4rem);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -.035em;
+      color: #ffffff;
+      text-shadow:
+        0 0 32px rgba(147, 197, 253, .6),
+        0 4px 20px rgba(59, 130, 246, .5),
+        0 2px 4px rgba(0, 0, 0, .85);
+    }
+    .text-silver-matte {
+      margin: 0;
+      font-size: clamp(1.45rem, 3.6vw, 3.1rem);
+      font-weight: 850;
+      line-height: 1.15;
+      letter-spacing: -.03em;
+      background: linear-gradient(180deg, #ffffff 0%, #bae6fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transform: translateZ(0);
+      filter: drop-shadow(0 0 20px rgba(56, 189, 248, .48)) drop-shadow(0 8px 16px rgba(0, 0, 0, .75));
+    }
+    .hero-scroll-cue {
+      margin-top: 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .85rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .scroll-pill {
+      padding: .45rem .95rem;
+      border-radius: 999px;
+      border: 1px solid rgba(147, 197, 253, .3);
+      background: rgba(15, 23, 62, .55);
+      color: #bfdbfe;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    .skip-hero-btn {
+      padding: .45rem .95rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, .2);
+      background: rgba(255, 255, 255, .07);
+      color: #ffffff;
+      font-size: .78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s ease;
+    }
+    .skip-hero-btn:hover { background: rgba(255, 255, 255, .15); }
+    .cta-wrapper {
+      position: absolute;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      width: 100%;
+      padding: 0 1.25rem;
+      will-change: transform;
+    }
+    .cta-wrapper h2 {
+      margin: 0 0 1rem;
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 850;
+      letter-spacing: -.03em;
+    }
+    .cta-wrapper p {
+      margin: 0 0 2rem;
+      color: #94a3b8;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      max-width: 36rem;
+    }
+    .btn-modern-light {
+      display: inline-flex;
+      align-items: center;
+      gap: .65rem;
+      padding: .95rem 1.85rem;
+      border: 0;
+      border-radius: 1.15rem;
+      background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+      color: #0f172a;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, .05), 0 12px 24px -4px rgba(0, 0, 0, .4), inset 0 1px 1px #ffffff;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .btn-modern-light:hover { transform: translateY(-3px); }
+    .main-card-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      perspective: 1500px;
+    }
+    .premium-depth-card {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+      width: 85vw;
+      height: 85vh;
+      border-radius: 40px;
+      background: linear-gradient(145deg, #162c6d 0%, #0a101d 100%);
+      box-shadow:
+        0 40px 100px -20px rgba(0, 0, 0, .9),
+        0 20px 40px -20px rgba(0, 0, 0, .8),
+        inset 0 1px 2px rgba(255, 255, 255, .2),
+        inset 0 -2px 4px rgba(0, 0, 0, .8);
+      border: 1px solid rgba(255, 255, 255, .05);
+    }
+    .card-sheen {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      z-index: 50;
+      background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, .07) 0%, transparent 42%);
+      mix-blend-mode: screen;
+      transition: opacity .3s ease;
+    }
+    .cinematic-grid {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 1.5rem 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 2rem;
+    }
+    .card-left-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      z-index: 20;
+    }
+    .card-left-text h3 {
+      margin: 0 0 1rem;
+      color: #ffffff;
+      font-size: clamp(1.5rem, 3vw, 2.35rem);
+      font-weight: 800;
+      letter-spacing: -.025em;
+      line-height: 1.15;
+    }
+    .hero-description {
+      margin: 0;
+      color: rgba(219, 234, 254, .78);
+      font-size: clamp(.9rem, 1.3vw, 1.08rem);
+      line-height: 1.6;
+      max-width: 24rem;
+    }
+    .hero-flow {
+      margin-top: 1.1rem;
+      color: #7dd3fc;
+      font-size: .8rem;
+      font-weight: 750;
+    }
+    .mockup-scroll-wrapper {
+      position: relative;
+      width: 300px;
+      height: 580px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      perspective: 1000px;
+    }
+    .mockup-scale-box {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: scale(.92);
+    }
+    .iphone-bezel {
+      position: relative;
+      width: 280px;
+      height: 580px;
+      border-radius: 3rem;
+      display: flex;
+      flex-direction: column;
+      background-color: #111;
+      box-shadow:
+        inset 0 0 0 2px #52525b,
+        inset 0 0 0 7px #000,
+        0 40px 80px -15px rgba(0, 0, 0, .9),
+        0 15px 25px -5px rgba(0, 0, 0, .7);
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .hardware-btn {
+      position: absolute;
+      background: linear-gradient(90deg, #404040 0%, #171717 100%);
+      box-shadow: -2px 0 5px rgba(0, 0, 0, .8), inset -1px 0 1px rgba(255, 255, 255, .15), inset 1px 0 2px rgba(0, 0, 0, .8);
+      border-left: 1px solid rgba(255, 255, 255, .05);
+      z-index: 0;
+    }
+    .iphone-screen {
+      position: absolute;
+      inset: 7px;
+      background: #050914;
+      border-radius: 2.5rem;
+      overflow: hidden;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 1);
+      color: #ffffff;
+      z-index: 10;
+    }
+    .screen-glare {
+      position: absolute;
+      inset: 0;
+      z-index: 40;
+      pointer-events: none;
+      background: linear-gradient(110deg, rgba(255, 255, 255, .08) 0%, rgba(255, 255, 255, 0) 45%);
+    }
+    .dynamic-island {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 28px;
+      background: #000;
+      border-radius: 999px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 12px;
+      box-shadow: inset 0 -1px 2px rgba(255, 255, 255, .1);
+    }
+    .island-led {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, .85);
+    }
+    .phone-ui {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      padding: 3rem 1.25rem 2rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .phone-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .phone-eyebrow {
       display: block;
-      width: clamp(190px, 24vw, 260px);
-      height: auto;
-      border-radius: .45rem;
-      box-shadow: 0 13px 20px rgba(2, 8, 31, .3), 0 30px 42px rgba(2, 8, 31, .22);
-      transform: rotateY(-12deg) rotateX(4deg) translateY(-8px);
-      transition: transform .35s ease, box-shadow .35s ease;
+      font-size: 10px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-weight: 700;
+      margin-bottom: 2px;
     }
-    .hero-logo-scene:hover .hero-logo {
-      box-shadow: 0 17px 24px rgba(2, 8, 31, .32), 0 38px 48px rgba(2, 8, 31, .25);
-      transform: rotateY(-5deg) rotateX(1deg) translateY(-13px);
+    .phone-title {
+      font-size: 1.2rem;
+      font-weight: 750;
+      color: #ffffff;
     }
-    .hero-footnote { margin: .75rem 0 0 !important; color: #d2daf0 !important; font-size: .72rem !important; }
+    .phone-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1.5px solid rgba(147, 197, 253, .38);
+      background: #0a1435;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+    .phone-avatar img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 999px;
+    }
+    .phone-ring-wrap {
+      position: relative;
+      width: 176px;
+      height: 176px;
+      margin: 0 auto 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 15px 25px rgba(0, 0, 0, .8));
+    }
+    .phone-ring-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .progress-ring {
+      transform: rotate(-90deg);
+      transform-origin: center;
+      stroke-dasharray: 402;
+      stroke-dashoffset: 402;
+      stroke-linecap: round;
+    }
+    .phone-ring-center {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .counter-val {
+      font-size: 2.35rem;
+      font-weight: 850;
+      letter-spacing: -.03em;
+      color: #ffffff;
+      line-height: 1;
+    }
+    .counter-label {
+      font-size: 8px;
+      color: rgba(191, 219, 254, .65);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-weight: 750;
+      margin-top: 4px;
+    }
+    .phone-widgets { display: grid; gap: .7rem; }
+    .widget-depth {
+      background: linear-gradient(180deg, rgba(255, 255, 255, .045) 0%, rgba(255, 255, 255, .01) 100%);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, .3), inset 0 1px 1px rgba(255, 255, 255, .05), inset 0 -1px 1px rgba(0, 0, 0, .5);
+      border: 1px solid rgba(255, 255, 255, .04);
+      border-radius: 1rem;
+      padding: .75rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .widget-icon-box {
+      width: 36px;
+      height: 36px;
+      border-radius: .7rem;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+    .widget-label { font-size: .78rem; font-weight: 700; color: #f1f5f9; }
+    .widget-sub { font-size: .66rem; color: #94a3b8; }
+    .phone-home-bar {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 4px;
+      background: rgba(255, 255, 255, .2);
+      border-radius: 999px;
+    }
+    .floating-ui-badge {
+      position: absolute;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      padding: .65rem .95rem;
+      border-radius: 1rem;
+      background: linear-gradient(135deg, rgba(255, 255, 255, .1) 0%, rgba(255, 255, 255, .02) 100%);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, .12),
+        0 25px 50px -12px rgba(0, 0, 0, .8),
+        inset 0 1px 1px rgba(255, 255, 255, .2);
+      white-space: nowrap;
+    }
+    .floating-badge-top { top: 2.5rem; left: -4.5rem; }
+    .floating-badge-bottom { bottom: 4rem; right: -4.5rem; }
+    .floating-badge-icon {
+      display: grid;
+      width: 2.2rem;
+      height: 2.2rem;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, .22);
+      border: 1px solid rgba(96, 165, 250, .35);
+      color: #7dd3fc;
+    }
+    .floating-badge-title { margin: 0; color: #ffffff; font-size: .8rem; font-weight: 800; line-height: 1.2; }
+    .floating-badge-sub { margin: 0; color: rgba(191, 219, 254, .65); font-size: .68rem; font-weight: 600; }
+    .card-right-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+      text-align: right;
+      z-index: 20;
+    }
+    .text-card-silver-matte {
+      margin: 0;
+      font-size: clamp(3rem, 6.2vw, 5.5rem);
+      font-weight: 900;
+      line-height: .95;
+      letter-spacing: -.04em;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transform: translateZ(0);
+      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, .8)) drop-shadow(0 4px 8px rgba(0, 0, 0, .6));
+    }
+    .card-right-sub {
+      margin-top: .5rem;
+      color: #93c5fd;
+      font-size: .78rem;
+      font-weight: 750;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
     .button {
       display: inline-flex;
       min-height: 2.8rem;
@@ -268,7 +761,7 @@
     }
     .button:hover { transform: translateY(-2px); background: #c5ceff; }
 
-    .course-shell { position: relative; z-index: 1; max-width: 990px; margin: 1.5rem auto 0; padding: 0 1rem 3rem; }
+    .course-shell { position: relative; z-index: 1; max-width: 1240px; margin: 0 auto; padding: 6.25rem 1.25rem 3rem; }
     .module-picker {
       display: flex;
       align-items: end;
@@ -293,15 +786,15 @@
     }
     .module-tab strong { display: block; color: inherit; font-size: .85rem; }
     .module-tab[aria-selected="true"] { border-top-color: #f01446; color: var(--navy); background: white; }
-    .overview-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .65rem; margin: 1rem 0; }
-    .overview-card { min-height: 4.65rem; padding: .65rem .8rem; border: 1px solid #d7deec; border-top: 3px solid #f01446; border-radius: .65rem; background: white; box-shadow: 0 4px 12px rgba(18, 21, 68, .06); }
-    .overview-card strong { display: block; color: var(--navy); font-size: .94rem; line-height: 1.3; }
-    .overview-card span { display: block; margin-top: .18rem; color: var(--muted); font-size: .72rem; }
-    .progress-card { min-height: 4.65rem; padding: .65rem .8rem; border: 1px solid #d7deec; border-top: 3px solid #f01446; border-radius: .65rem; background: #f3f5fb; }
-    .progress-copy { display: flex; justify-content: space-between; gap: .5rem; margin: 0 0 .4rem; color: var(--navy); font-size: .76rem; font-weight: 750; }
-    .progress-track { height: .42rem; overflow: hidden; border-radius: 999px; background: #e1e6f1; }
-    .progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--blue), var(--accent)); transition: width .25s ease; }
-    .progress-card small { display: block; margin-top: .32rem; color: var(--muted); font-size: .67rem; }
+    .overview-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin: 1.5rem 0 1.4rem; }
+    .overview-card { min-height: 4.8rem; padding: .8rem 1rem; border: 1px solid rgba(147, 197, 253, .18); border-top: 3px solid #f01446; border-radius: .85rem; background: #080d1e; box-shadow: 0 10px 24px rgba(0, 0, 0, .45); }
+    .overview-card strong { display: block; color: #ffffff; font-size: .96rem; line-height: 1.3; }
+    .overview-card span { display: block; margin-top: .22rem; color: #94a3b8; font-size: .76rem; }
+    .progress-card { min-height: 4.8rem; padding: .8rem 1rem; border: 1px solid rgba(147, 197, 253, .18); border-top: 3px solid #f01446; border-radius: .85rem; background: #0b1228; box-shadow: 0 10px 24px rgba(0, 0, 0, .45); }
+    .progress-copy { display: flex; justify-content: space-between; gap: .5rem; margin: 0 0 .45rem; color: #ffffff; font-size: .78rem; font-weight: 750; }
+    .progress-track { height: .45rem; overflow: hidden; border-radius: 999px; background: rgba(147, 197, 253, .16); }
+    .progress-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #3b82f6, #38bdf8); transition: width .25s ease; }
+    .progress-card small { display: block; margin-top: .35rem; color: #94a3b8; font-size: .7rem; }
     .how-it-works { margin: .85rem 0 1.2rem; padding: .7rem .85rem; border-left: 3px solid var(--navy); border-radius: .4rem; color: #33425f; background: #f2f4fb; font-size: .8rem; }
     .how-it-works strong { color: var(--navy); }
     .section-nav { display: flex; flex-wrap: wrap; gap: .42rem; margin: 1rem 0 1.4rem; }
@@ -312,55 +805,63 @@
       grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
       gap: 1.4rem;
-      margin: 1.5rem 0;
+      margin: 5rem 0 2rem;
       padding: clamp(1rem, 3vw, 1.6rem);
-      border: 1px solid #dce2ee;
+      border: 1px solid rgba(147, 197, 253, .18);
       border-top: 3px solid #f01446;
       border-radius: .85rem;
-      background: #f7f8fc;
-      box-shadow: 0 8px 24px rgba(18, 21, 68, .07);
+      background: #080d1d;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, .55);
     }
-    .qr-label { color: #db173f; font-size: .68rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
-    .qr-section h2 { margin: .25rem 0 .45rem; color: var(--navy); font-size: clamp(1.25rem, 3vw, 1.8rem); line-height: 1.2; }
-    .qr-section p { max-width: 610px; margin: 0; color: #475569; }
-    .qr-image { display: block; width: clamp(150px, 24vw, 210px); height: auto; border: 8px solid white; border-radius: .55rem; box-shadow: 0 4px 16px rgba(18, 21, 68, .12); }
+    .qr-label { color: #fb7185; font-size: .68rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .qr-section h2 { margin: .25rem 0 .45rem; color: #ffffff; font-size: clamp(1.25rem, 3vw, 1.8rem); line-height: 1.2; }
+    .qr-section p { max-width: 610px; margin: 0; color: #cbd5e1; }
+    .qr-image { display: block; width: clamp(150px, 24vw, 210px); height: auto; border: 8px solid white; border-radius: .55rem; box-shadow: 0 8px 24px rgba(0, 0, 0, .45); }
 
     main { min-width: 0; }
     .module-panel[hidden] { display: none; }
     .module-heading { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem; margin: .25rem 0 1.4rem; }
     .module-heading h2 { margin: .25rem 0 0; color: #ffffff; font-size: clamp(1.7rem, 4vw, 2.45rem); line-height: 1.15; }
     .module-kicker { color: #9dc8ff; font-size: .78rem; font-weight: 850; letter-spacing: .13em; text-transform: uppercase; }
-    .complete-button { border-color: #b8c5d6; color: var(--navy); background: white; }
-    .complete-button[aria-pressed="true"] { border-color: #a4dacb; color: var(--success); background: #eaf8f2; }
+    .complete-button { border-color: rgba(147, 197, 253, .3); color: #e2e8f0; background: #0c142b; }
+    .complete-button[aria-pressed="true"] { border-color: #34d399; color: #6ee7b7; background: rgba(16, 185, 129, .15); }
 
-    .section-card { margin: 1rem 0; padding: clamp(1.1rem, 3vw, 1.8rem); border: 1px solid var(--line); border-top: 3px solid #f01446; border-radius: 1rem; background: var(--paper); box-shadow: 0 12px 26px rgba(18, 21, 68, .13), 0 4px 12px rgba(240, 20, 70, .06); }
-    .section-card h3 { margin: 0 0 .75rem; color: var(--navy); font-size: 1.28rem; line-height: 1.3; }
-    .section-card h4 { margin: 1.1rem 0 .3rem; color: var(--navy-soft); }
+    .section-card { margin: 1rem 0; padding: clamp(1.1rem, 3vw, 1.8rem); border: 1px solid rgba(147, 197, 253, .16); border-top: 3px solid #f01446; border-radius: 1rem; background: #070c1a; color: #dbeafe; box-shadow: 0 16px 34px rgba(0, 0, 0, .6); }
+    .section-card h3 { margin: 0 0 .75rem; color: #ffffff; font-size: 1.28rem; line-height: 1.3; }
+    .section-card h4 { margin: 1.1rem 0 .3rem; color: #93c5fd; }
     .section-card p:first-of-type { margin-top: .25rem; }
     .section-card p:last-child { margin-bottom: 0; }
-    .lead { color: #475569; font-size: 1.03rem; }
+    .lead { color: #cbd5e1; font-size: 1.03rem; }
     .grid-2, .grid-3 { display: grid; gap: .8rem; }
     .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .mini-card { padding: 1rem; border: 1px solid var(--line); border-top: 2px solid #aebcff; border-radius: .85rem; background: #fbfcfe; box-shadow: 0 6px 16px rgba(18, 21, 68, .09); }
-    .mini-card h4 { margin: 0 0 .35rem; }
-    .mini-card p { margin: 0; color: #53647b; font-size: .94rem; }
+    .mini-card { padding: 1rem; border: 1px solid rgba(147, 197, 253, .16); border-top: 2px solid #3b82f6; border-radius: .85rem; background: #0b1228; box-shadow: 0 8px 20px rgba(0, 0, 0, .4); }
+    .mini-card h4 { margin: 0 0 .35rem; color: #ffffff; }
+    .mini-card p { margin: 0; color: #cbd5e1; font-size: .94rem; }
     .component-thumb {
       display: block;
       width: 100%;
-      height: 165px;
-      margin-top: .75rem;
-      padding: .35rem;
-      border: 1px solid var(--line);
-      border-radius: .65rem;
-      background: #ffffff;
+      max-width: 300px;
+      height: 175px;
+      margin: .9rem auto 0;
+      padding: .65rem;
+      border: 1px solid rgba(147, 197, 253, .22);
+      border-radius: .85rem;
+      background: #f8fafc;
       object-fit: contain;
-      box-shadow: 0 4px 12px rgba(18, 21, 68, .06);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, .4);
     }
-    .callout { margin: 1rem 0; padding: .9rem 1rem; border-left: 4px solid var(--accent); border-radius: .55rem; background: #f0f2ff; }
-    .callout strong { color: var(--navy); }
+    .component-thumb-cover {
+      max-width: 100%;
+      height: 190px;
+      padding: 0;
+      background: #070c1a;
+      object-fit: cover;
+    }
+    .callout { margin: 1rem 0; padding: .9rem 1rem; border-left: 4px solid #3b82f6; border-radius: .55rem; background: rgba(30, 58, 138, .25); color: #dbeafe; }
+    .callout strong { color: #ffffff; }
     .pill-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .85rem; }
-    .pill { padding: .32rem .7rem; border: 1px solid #dce7f3; border-radius: 999px; color: #334a67; background: #f7faff; font-size: .83rem; font-weight: 700; }
+    .pill { padding: .32rem .7rem; border: 1px solid rgba(147, 197, 253, .25); border-radius: 999px; color: #bfdbfe; background: rgba(15, 23, 62, .65); font-size: .83rem; font-weight: 700; }
     .timeline { display: grid; gap: .7rem; margin-top: 1rem; }
     .timeline-item { display: grid; grid-template-columns: 6rem 1fr; gap: .9rem; align-items: start; padding: .8rem; border-radius: .75rem; background: #f7f9fc; }
     .timeline-item time { color: var(--blue); font-weight: 850; }
@@ -381,52 +882,602 @@
     th { color: var(--navy); background: #f5f8fc; }
 
     .video-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
-    .video-card { overflow: hidden; border: 1px solid var(--line); border-radius: .9rem; background: #f8fafc; }
-    .video-card video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #091629; }
-    .video-caption { padding: .75rem .9rem; }
-    .video-caption strong { display: block; color: var(--navy); }
-    .video-caption span { color: var(--muted); font-size: .85rem; }
+    .video-card { overflow: hidden; border: 1px solid rgba(147, 197, 253, .2); border-radius: .9rem; background: #0b1228; }
+    .video-card video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #040814; }
+    .video-caption { padding: .75rem .9rem; background: #0b1228; }
+    .video-caption strong { display: block; color: #ffffff; }
+    .video-caption span { color: #94a3b8; font-size: .85rem; }
+    #inf-video { text-align: center; }
+    #inf-video .lead { margin-inline: auto; max-width: 680px; }
+    #inf-video .video-grid { grid-template-columns: minmax(0, 720px); justify-content: center; }
+    #inf-video .pill-row { justify-content: center; }
 
-    .activity { border-color: #cbdcf5; background: linear-gradient(145deg, #f8fbff, white); }
-    .activity-label { display: inline-block; margin-bottom: .45rem; color: var(--blue); font-size: .74rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .activity { border-color: rgba(147, 197, 253, .22); background: linear-gradient(145deg, #091026, #070c1a); }
+    .activity-label { display: inline-block; margin-bottom: .45rem; color: #7dd3fc; font-size: .74rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
     .quiz { margin-top: 1rem; }
     .quiz fieldset { display: grid; gap: .5rem; margin: .8rem 0; padding: 0; border: 0; }
-    .quiz legend { margin-bottom: .45rem; font-weight: 750; }
-    .quiz label { display: flex; gap: .6rem; align-items: start; padding: .7rem .8rem; border: 1px solid var(--line); border-radius: .7rem; background: white; cursor: pointer; }
-    .quiz input { margin-top: .38rem; accent-color: var(--blue); }
+    .quiz legend { margin-bottom: .45rem; font-weight: 750; color: #ffffff; }
+    .quiz label { display: flex; gap: .6rem; align-items: start; padding: .7rem .8rem; border: 1px solid rgba(147, 197, 253, .2); border-radius: .7rem; background: #0c142c; color: #e2e8f0; cursor: pointer; }
+    .quiz input { margin-top: .38rem; accent-color: #3b82f6; }
     .quiz-result { min-height: 1.5rem; margin: .7rem 0 0; font-weight: 750; }
-    details { margin: .8rem 0; border: 1px solid var(--line); border-radius: .8rem; background: #fbfcfe; }
-    summary { padding: .85rem 1rem; color: var(--navy); cursor: pointer; font-weight: 750; }
-    details > .details-body { padding: 0 1rem 1rem; }
-    .source-sequence { border-top-color: #3547a7; background: linear-gradient(145deg, #fff, #f3f5ff); }
-    .source-topic { border-left: 4px solid #3547a7; background: #fff; box-shadow: 0 6px 16px rgba(18, 21, 68, .1); }
-    .source-topic:nth-of-type(even) { border-left-color: #f01446; box-shadow: 0 6px 16px rgba(240, 20, 70, .09); }
-    .source-topic-featured { border-left: 6px solid #f01446; background: linear-gradient(145deg, #fff, #f5f6ff); box-shadow: 0 10px 24px rgba(18, 21, 68, .17); }
+    details { margin: .8rem 0; border: 1px solid rgba(147, 197, 253, .16); border-radius: .8rem; background: #0a1126; }
+    summary { padding: .85rem 1rem; color: #f8fafc; cursor: pointer; font-weight: 750; }
+    details > .details-body { padding: 0 1rem 1rem; color: #cbd5e1; }
+    .source-sequence { border-top-color: #3547a7; background: linear-gradient(145deg, #060a18, #0a1026); }
+    .source-topic { border-left: 4px solid #3547a7; background: #0b1228; box-shadow: 0 8px 20px rgba(0, 0, 0, .45); }
+    .source-topic:nth-of-type(even) { border-left-color: #f01446; box-shadow: 0 8px 20px rgba(0, 0, 0, .45); }
+    .source-topic-featured { border-left: 6px solid #f01446; background: linear-gradient(145deg, #0d1633, #091024); box-shadow: 0 10px 24px rgba(0, 0, 0, .5); }
     .source-topic-featured > summary,
-    .source-topic-featured .details-body strong { color: #17265b; font-size: 1.05rem; font-weight: 800; }
-    .source-topic-static { margin: .8rem 0; border: 1px solid var(--line); border-left: 6px solid #f01446; border-radius: .8rem; }
+    .source-topic-featured .details-body strong { color: #ffffff; font-size: 1.05rem; font-weight: 800; }
+    .source-topic-static { margin: .8rem 0; border: 1px solid rgba(147, 197, 253, .18); border-left: 6px solid #f01446; border-radius: .8rem; }
     .source-topic-static > .details-body { padding: .2rem 1rem; }
-    .source-topic-lead { margin: .15rem 0 1rem; padding: .75rem 1rem; border-left: 4px solid #3547a7; border-radius: .55rem; background: #eef2ff; color: var(--navy); font-size: 1.05rem; font-weight: 800; }
+    .source-topic-lead { margin: .15rem 0 1rem; padding: .75rem 1rem; border-left: 4px solid #3b82f6; border-radius: .55rem; background: rgba(59, 130, 246, .18); color: #ffffff; font-size: 1.05rem; font-weight: 800; }
     .source-sequence .source-topic > summary,
     .source-sequence .source-chapter-heading h4 { text-transform: uppercase; }
-    .value-term { display: inline-block; margin-right: .25rem; padding: .12rem .4rem; border-radius: .35rem; border-bottom: 2px solid #3547a7; background: #eef2ff; color: var(--navy); font-weight: 850; }
-    .source-chapter-heading { display: flex; align-items: center; gap: .7rem; margin: .8rem 0; padding: .8rem 1rem; border: 1px solid #dce3f2; border-left: 4px solid #3547a7; border-radius: .8rem; background: #fff; box-shadow: 0 6px 16px rgba(18, 21, 68, .1); }
-    .source-chapter-heading h4 { margin: 0; color: var(--navy); font-size: 1rem; }
+    .value-term { display: inline-block; margin-right: .25rem; padding: .12rem .4rem; border-radius: .35rem; border-bottom: 2px solid #3b82f6; background: rgba(59, 130, 246, .2); color: #ffffff; font-weight: 850; }
+    .source-chapter-heading { display: flex; align-items: center; gap: .7rem; margin: .8rem 0; padding: .8rem 1rem; border: 1px solid rgba(147, 197, 253, .2); border-left: 4px solid #3b82f6; border-radius: .8rem; background: #0c142c; box-shadow: 0 6px 16px rgba(0, 0, 0, .4); }
+    .source-chapter-heading h4 { margin: 0; color: #ffffff; font-size: 1rem; }
+
+    /* OrbitRotation (Informática Básica) */
+    @keyframes orbit-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .orbit-card {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      min-height: 410px;
+      margin-top: 1rem;
+      padding: 2rem 1rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(147, 197, 253, .16);
+      background: radial-gradient(circle at center, rgba(37, 99, 235, .14), #040814 70%);
+    }
+    .orbit-stage {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 340px;
+      height: 340px;
+    }
+    .orbit-center {
+      position: relative;
+      z-index: 4;
+      display: grid;
+      width: 4.8rem;
+      height: 4.8rem;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(10, 18, 42, .95);
+      border: 1px solid rgba(96, 165, 250, .45);
+      color: #60a5fa;
+      box-shadow: 0 0 28px rgba(59, 130, 246, .35), 0 12px 24px rgba(0, 0, 0, .7);
+    }
+    .orbit-ring {
+      position: absolute;
+      border-radius: 999px;
+      border: 2px dotted rgba(147, 197, 253, .26);
+      animation: orbit-spin var(--orbit-dur, 18s) linear infinite;
+    }
+    .orbit-node {
+      position: absolute;
+      display: grid;
+      width: 2.35rem;
+      height: 2.35rem;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(8, 14, 34, .92);
+      border: 1px solid rgba(147, 197, 253, .32);
+      color: #93c5fd;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, .6);
+      transform: translate(-50%, -50%);
+    }
     .source-chapter-number { display: grid; width: 2rem; height: 2rem; flex: 0 0 auto; place-items: center; border-radius: .55rem; color: #fff; background: #3547a7; font-weight: 850; }
+
+    /* Hero apresentação de slide */
+    .hero-slide-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+      margin-top: 1rem;
+    }
+    .hero-slide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      padding: .28rem .68rem;
+      border: 1px solid rgba(174, 188, 255, .28);
+      border-radius: 999px;
+      color: #dbeafe;
+      background: rgba(15, 23, 62, .55);
+      font-size: .74rem;
+      font-weight: 700;
+    }
+
+    /* Apresentação em slides com fio de luz chroma */
+    @property --chroma-angle {
+      syntax: "<angle>";
+      initial-value: 0deg;
+      inherits: false;
+    }
+    @keyframes chromaSpin {
+      0% { --chroma-angle: 0deg; }
+      100% { --chroma-angle: 360deg; }
+    }
+    .slide-deck-section {
+      margin: 1.4rem 0;
+    }
+    .slide-deck-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+      margin-bottom: .9rem;
+      padding: .75rem 1rem;
+      border: 1px solid rgba(147, 197, 253, .22);
+      border-radius: .85rem;
+      background: #050505;
+      color: #e2e8f0;
+    }
+    .slide-deck-title {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      font-size: .92rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .slide-counter {
+      padding: .2rem .6rem;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, .2);
+      border: 1px solid rgba(96, 165, 250, .4);
+      color: #93c5fd;
+      font-size: .78rem;
+      font-weight: 750;
+    }
+    .slide-jump {
+      max-width: 100%;
+      padding: .4rem .65rem;
+      border: 1px solid rgba(147, 197, 253, .3);
+      border-radius: .55rem;
+      background: #0a0a0a;
+      color: #e2e8f0;
+      font-size: .8rem;
+      cursor: pointer;
+    }
+    .slide-stage {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: .9rem;
+    }
+    .slide-nav-btn {
+      display: grid;
+      width: 2.85rem;
+      height: 2.85rem;
+      place-items: center;
+      border: 1px solid rgba(147, 197, 253, .38);
+      border-radius: 999px;
+      background: #080808;
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .65);
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+    }
+    .slide-nav-btn:hover:not(:disabled) {
+      transform: scale(1.07);
+      background: #1e3a8a;
+      border-color: #7dd3fc;
+    }
+    .slide-nav-btn:disabled {
+      opacity: .35;
+      cursor: not-allowed;
+    }
+    .slide-chroma-frame {
+      position: relative;
+      padding: 2.5px;
+      border-radius: 1.15rem;
+      background: conic-gradient(from var(--chroma-angle), #00f5ff, #3b82f6, #8b5cf6, #f01446, #38bdf8, #00f5ff);
+      animation: chromaSpin 4.5s linear infinite;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, .75), 0 0 26px rgba(56, 189, 248, .22);
+    }
+    .slide-chroma-frame::before {
+      position: absolute;
+      inset: -4px;
+      z-index: -1;
+      border-radius: 1.3rem;
+      background: conic-gradient(from var(--chroma-angle), #00f5ff, #3b82f6, #8b5cf6, #f01446, #38bdf8, #00f5ff);
+      animation: chromaSpin 4.5s linear infinite;
+      filter: blur(14px);
+      opacity: .42;
+      content: "";
+      pointer-events: none;
+    }
+    .slide-viewport {
+      overflow: hidden;
+      border-radius: 1.02rem;
+      background: #000000;
+      cursor: grab;
+      user-select: none;
+      touch-action: pan-y;
+    }
+    .slide-viewport.is-dragging { cursor: grabbing; }
+    .slide-track {
+      display: flex;
+      transition: transform .36s cubic-bezier(.22, .61, .36, 1);
+      will-change: transform;
+    }
+    .slide-item {
+      flex: 0 0 100%;
+      width: 100%;
+      min-width: 0;
+      min-height: clamp(240px, 38vh, 420px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: safe center;
+      text-align: center;
+      padding: clamp(1.25rem, 3.5vw, 2.75rem) clamp(.9rem, 4vw, 3.5rem);
+      color: #e2e8f0;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+    .slide-kicker {
+      display: inline-block;
+      max-width: 100%;
+      margin-bottom: .55rem;
+      padding: .22rem .68rem;
+      border-radius: 999px;
+      background: rgba(240, 20, 70, .18);
+      border: 1px solid rgba(240, 20, 70, .48);
+      color: #fda4af;
+      font-size: clamp(.65rem, 1.1vw, .72rem);
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .slide-item h3 {
+      margin: 0 0 .9rem;
+      width: 100%;
+      max-width: 900px;
+      color: #ffffff;
+      font-size: clamp(1.08rem, 2.5vw, 1.65rem);
+      line-height: 1.28;
+      text-transform: uppercase;
+    }
+    .slide-item p {
+      margin: .45rem auto;
+      width: 100%;
+      max-width: 820px;
+      color: #dbe4f3;
+      font-size: clamp(.88rem, 1.35vw, 1rem);
+      line-height: 1.65;
+    }
+    .slide-item .original-slide-figure {
+      width: 100%;
+      max-width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+    .slide-item p strong { color: #ffffff; }
+    .slide-item .value-term {
+      background: rgba(59, 130, 246, .22);
+      border-bottom-color: #60a5fa;
+      color: #ffffff;
+    }
+    .slide-item .source-topic-lead {
+      background: rgba(59, 130, 246, .2);
+      border-left-color: #38bdf8;
+      color: #ffffff;
+    }
+    .slide-item .original-slide-image {
+      max-height: 540px;
+      width: min(100%, 860px);
+      height: auto;
+      margin: .85rem auto 0;
+    }
+    .slide-toolbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .6rem;
+    }
+    .slide-dropdown {
+      position: relative;
+    }
+    .slide-dropdown-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      max-width: 260px;
+      padding: .42rem .75rem;
+      border: 1px solid rgba(147, 197, 253, .32);
+      border-radius: .6rem;
+      background: #0a0a0a;
+      color: #e2e8f0;
+      font-size: .8rem;
+      font-weight: 650;
+      cursor: pointer;
+    }
+    .slide-dropdown-btn span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .slide-dropdown-menu {
+      position: absolute;
+      top: calc(100% + .4rem);
+      right: 0;
+      z-index: 80;
+      width: min(340px, 82vw);
+      max-height: 280px;
+      overflow-y: auto;
+      padding: .35rem;
+      border: 1px solid rgba(147, 197, 253, .28);
+      border-radius: .75rem;
+      background: #050814;
+      box-shadow: 0 20px 44px rgba(0, 0, 0, .85);
+    }
+    .slide-dropdown-menu[hidden] { display: none; }
+    .slide-dropdown-option {
+      display: block;
+      width: 100%;
+      padding: .48rem .65rem;
+      border: 0;
+      border-radius: .5rem;
+      background: transparent;
+      color: #dbeafe;
+      font-size: .8rem;
+      text-align: left;
+      cursor: pointer;
+    }
+    .slide-dropdown-option:hover,
+    .slide-dropdown-option[aria-selected="true"] {
+      background: rgba(59, 130, 246, .25);
+      color: #ffffff;
+    }
+    .slide-present-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .42rem .85rem;
+      border: 1px solid rgba(240, 20, 70, .55);
+      border-radius: .6rem;
+      background: rgba(240, 20, 70, .18);
+      color: #ffffff;
+      font-size: .8rem;
+      font-weight: 750;
+      cursor: pointer;
+      transition: background .18s ease, transform .18s ease;
+    }
+    .slide-present-btn:hover {
+      background: rgba(240, 20, 70, .35);
+      transform: translateY(-1px);
+    }
+    html.presentation-active,
+    body.presentation-active {
+      overflow: hidden !important;
+      height: 100% !important;
+      overscroll-behavior: none;
+    }
+    body.presentation-active .topbar {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transform: translateX(-50%) translateY(-140%) !important;
+    }
+    .slide-deck-section {
+      margin: 5rem 0;
+    }
+    .module-hero-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(240px, .85fr);
+      align-items: center;
+      gap: clamp(1.5rem, 4vw, 3rem);
+      overflow: hidden;
+      margin: 1.5rem 0 4rem;
+      padding: clamp(1.6rem, 4vw, 2.8rem);
+      border-top: 3px solid #f01446;
+      border-radius: 1.25rem;
+      color: #ffffff;
+      background:
+        radial-gradient(ellipse at 20% 10%, rgba(89, 135, 227, .28), transparent 42%),
+        linear-gradient(115deg, #1d3b76 0%, #121544 62%, #3b081f 100%);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, .6);
+    }
+    .module-hero-card .eyebrow {
+      color: #c1ccff;
+      font-size: .74rem;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+      text-shadow: none;
+    }
+    .module-hero-card h3 {
+      margin: 0 0 .75rem;
+      font-size: clamp(1.85rem, 3.8vw, 2.85rem);
+      line-height: 1.12;
+      letter-spacing: -.03em;
+      color: #ffffff;
+    }
+    .module-hero-card .accent { color: #7f91f3; }
+    .module-hero-card p {
+      margin: 0;
+      max-width: 480px;
+      color: #e0e8f7;
+      font-size: .98rem;
+      line-height: 1.6;
+    }
+    .module-hero-card .flow {
+      margin-top: 1rem;
+      color: #9dc8ff;
+      font-size: .82rem;
+      font-weight: 750;
+    }
+    .module-hero-logo-wrap {
+      display: grid;
+      place-items: center;
+      perspective: 900px;
+    }
+    .module-hero-logo {
+      display: block;
+      width: clamp(170px, 21vw, 235px);
+      height: auto;
+      border-radius: .65rem;
+      box-shadow: 0 18px 34px rgba(2, 8, 31, .48);
+      transform: rotateY(-12deg) rotateX(4deg);
+      transition: transform .35s ease;
+    }
+    .module-hero-card:hover .module-hero-logo {
+      transform: rotateY(-4deg) rotateX(1deg) translateY(-4px);
+    }
+    @media (max-width: 720px) {
+      .module-hero-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .module-hero-card p { margin-inline: auto; }
+    }
+    .slide-deck-section.is-presentation-mode {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      margin: 0;
+      width: 100vw;
+      height: 100dvh;
+      max-height: 100dvh;
+      overflow: hidden;
+      padding: clamp(.75rem, 2vw, 1.35rem);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      align-items: center;
+      justify-items: center;
+      gap: .65rem;
+      background: rgba(0, 0, 0, .96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .slide-deck-section.is-presentation-mode .slide-deck-toolbar,
+    .slide-deck-section.is-presentation-mode .slide-stage,
+    .slide-deck-section.is-presentation-mode .slide-hint {
+      width: min(1180px, 95vw);
+      margin: 0 auto;
+    }
+    .slide-deck-section.is-presentation-mode .slide-deck-toolbar {
+      position: static;
+    }
+    .slide-deck-section.is-presentation-mode .slide-stage {
+      height: 100%;
+      min-height: 0;
+      align-items: center;
+    }
+    .slide-deck-section.is-presentation-mode .slide-chroma-frame {
+      width: 100%;
+      max-height: 100%;
+    }
+    .slide-deck-section.is-presentation-mode .slide-viewport {
+      overflow: hidden;
+      max-height: calc(100dvh - 9.25rem);
+    }
+    .slide-deck-section.is-presentation-mode .slide-item {
+      min-height: clamp(220px, 48dvh, 480px);
+      max-height: calc(100dvh - 9.5rem);
+      justify-content: safe center;
+      overflow-y: auto;
+      scrollbar-width: none;
+      padding: clamp(1rem, 2.2vw, 1.75rem) clamp(1rem, 3.5vw, 2.8rem);
+    }
+    .slide-deck-section.is-presentation-mode .slide-item::-webkit-scrollbar { display: none; }
+    .slide-deck-section.is-presentation-mode .slide-item .slide-kicker {
+      font-size: .7em;
+      margin-bottom: .4em;
+    }
+    .slide-deck-section.is-presentation-mode .slide-item h3 {
+      margin-bottom: .5em;
+      font-size: 1.32em;
+    }
+    .slide-deck-section.is-presentation-mode .slide-item p {
+      margin: .26em auto;
+      font-size: .95em;
+      line-height: 1.48;
+    }
+    .slide-deck-section.is-presentation-mode .slide-item .original-slide-image {
+      max-height: min(50dvh, 440px);
+      width: auto;
+      max-width: 100%;
+    }
+    @media (max-width: 620px) {
+      .slide-deck-section.is-presentation-mode {
+        grid-template-rows: auto minmax(0, 1fr);
+      }
+      .slide-deck-section.is-presentation-mode .slide-hint {
+        display: none;
+      }
+      .slide-deck-section.is-presentation-mode .slide-viewport {
+        max-height: calc(100dvh - 11rem);
+      }
+      .slide-deck-section.is-presentation-mode .slide-item {
+        min-height: 36dvh;
+        max-height: calc(100dvh - 11.5rem);
+      }
+      .slide-deck-section.is-presentation-mode .slide-item .original-slide-image {
+        max-height: 36dvh;
+      }
+    }
+    .slide-hint {
+      margin-top: .6rem;
+      text-align: center;
+      color: #93c5fd;
+      font-size: .76rem;
+    }
+    @media (max-width: 620px) {
+      .slide-stage {
+        grid-template-columns: 1fr 1fr;
+        gap: .6rem;
+      }
+      .slide-chroma-frame {
+        grid-column: 1 / -1;
+        order: -1;
+      }
+      .slide-nav-btn {
+        width: 100%;
+        border-radius: .75rem;
+      }
+      .slide-item {
+        min-height: auto;
+        padding: 1.15rem .9rem;
+      }
+      .slide-item .original-slide-image {
+        max-height: 50vh;
+        width: 100%;
+        object-fit: contain;
+      }
+    }
     .footer { position: relative; z-index: 1; max-width: 990px; margin: 0 auto; padding: 0 1rem 2rem; color: #b7c4df; font-size: .8rem; }
     .back-to-top { margin-top: .75rem; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
     @media (max-width: 900px) {
-      .hero { grid-template-columns: minmax(0, 1fr) minmax(270px, .9fr); }
+      .cinematic-grid { grid-template-columns: 1fr; text-align: center; padding: 1.2rem; gap: .5rem; }
+      .card-left-text { order: 3; }
+      .card-left-text .hero-description { display: none; }
+      .mockup-scroll-wrapper { order: 2; height: 370px; }
+      .mockup-scale-box { transform: scale(.62); }
+      .card-right-text { order: 1; align-items: center; text-align: center; }
+      .floating-badge-top { top: .5rem; left: -1rem; }
+      .floating-badge-bottom { bottom: 2.5rem; right: -1rem; }
     }
     @media (max-width: 620px) {
-      .topbar-note { display: none; }
-      .hero { grid-template-columns: 1fr; gap: 1.2rem; padding: 1.2rem; }
-      .hero-logo-scene { min-height: 220px; }
-      .hero-logo { width: clamp(170px, 50vw, 230px); }
-      .module-picker { gap: .3rem; overflow-x: auto; }
-      .module-tab { padding-inline: .75rem; }
+      .topbar { padding: .6rem .85rem; }
+      .floating-badge-top { left: 0; }
+      .floating-badge-bottom { right: 0; }
+      .hero-logo { width: clamp(140px, 42vw, 190px); }
       .overview-grid { grid-template-columns: 1fr; }
       .qr-section { grid-template-columns: 1fr; text-align: center; }
       .qr-section p { margin-inline: auto; }
@@ -517,10 +1568,6 @@
 
   <header class="topbar" id="inicio">
     <div class="brand"><img class="brand-logo" src="assets/images/logo-ateky.png" alt="Logo Ateky"><span>ATEKY</span></div>
-    <div class="topbar-note">Trilha de boas-vindas · novos colaboradores</div>
-  </header>
-
-  <div class="course-shell" id="curso">
     <div class="module-picker" role="tablist" aria-label="Escolha uma apresentação">
       <button class="module-tab" id="tab-integracao" type="button" role="tab" aria-controls="modulo-integracao" aria-selected="true" data-module="integracao">
         <strong>1 · Integração</strong>
@@ -532,18 +1579,122 @@
         <strong>3 · Informática Básica</strong>
       </button>
     </div>
+    <a class="topbar-cta" href="#prova">Prova QR</a>
+  </header>
 
-    <section class="hero" aria-labelledby="page-title">
-      <div class="hero-content">
-        <div class="eyebrow" id="hero-kicker">FORMAÇÃO INICIAL · ATEKY</div>
-        <h1 id="page-title"><span id="hero-title-main">Conheça a Ateky</span><br><span class="hero-title-accent" id="hero-title-accent">e faça parte dessa história.</span></h1>
-        <p class="hero-description" id="hero-description">Uma jornada para conhecer nossa história, nossos valores e o jeito humano de criar conexões com as pessoas.</p>
-        <div class="hero-flow" id="hero-flow">Conhecer → Aprender → Conectar</div>
+  <section class="cinematic-hero" id="cinematic-hero" aria-labelledby="page-title">
+    <div class="film-grain" aria-hidden="true"></div>
+    <div class="bg-grid-theme" aria-hidden="true"></div>
+
+    <!-- Camada 1: Título Inicial Fullscreen -->
+    <div class="hero-text-wrapper">
+      <div class="eyebrow" id="hero-kicker">APRESENTAÇÃO OFICIAL · ATEKY</div>
+      <h1 id="page-title" class="text-track text-3d-matte"><span id="hero-title-main">Integração de novos colaboradores</span></h1>
+      <p class="text-days text-silver-matte"><span id="hero-title-accent">conheça a Ateky e faça parte dessa história.</span></p>
+    </div>
+
+    <!-- Camada 2: Card Físico Azul Profundo com Mockup iPhone -->
+    <div class="main-card-layer">
+      <div class="main-card premium-depth-card" id="cinematic-card">
+        <div class="card-sheen" aria-hidden="true"></div>
+        <div class="cinematic-grid">
+          <div class="card-left-text">
+            <h3>Cultura &amp; Pessoas.</h3>
+            <p class="hero-description" id="hero-description">Tecnologia, agilidade e atendimento humanizado para conectar pessoas no dia a dia.</p>
+            <div class="hero-flow" id="hero-flow">História → Valores → Normas → Prática</div>
+          </div>
+
+          <div class="mockup-scroll-wrapper">
+            <div class="mockup-scale-box">
+              <div class="iphone-bezel" id="iphone-mockup">
+                <div class="hardware-btn" style="top:120px;left:-3px;width:3px;height:25px;border-radius:4px 0 0 4px;" aria-hidden="true"></div>
+                <div class="hardware-btn" style="top:160px;left:-3px;width:3px;height:45px;border-radius:4px 0 0 4px;" aria-hidden="true"></div>
+                <div class="hardware-btn" style="top:220px;left:-3px;width:3px;height:45px;border-radius:4px 0 0 4px;" aria-hidden="true"></div>
+                <div class="hardware-btn" style="top:170px;right:-3px;width:3px;height:70px;border-radius:0 4px 4px 0;" aria-hidden="true"></div>
+
+                <div class="iphone-screen">
+                  <div class="screen-glare" aria-hidden="true"></div>
+                  <div class="dynamic-island" aria-hidden="true"><div class="island-led"></div></div>
+
+                  <div class="phone-ui">
+                    <div class="phone-widget phone-header">
+                      <div>
+                        <span class="phone-eyebrow">Hoje</span>
+                        <span class="phone-title">Integração</span>
+                      </div>
+                      <div class="phone-avatar">
+                        <img src="assets/images/logo-ateky.png" alt="Ateky">
+                      </div>
+                    </div>
+
+                    <div class="phone-widget phone-ring-wrap">
+                      <svg class="phone-ring-svg" viewBox="0 0 176 176" aria-hidden="true">
+                        <circle cx="88" cy="88" r="64" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="12" />
+                        <circle class="progress-ring" cx="88" cy="88" r="64" fill="none" stroke="#3B82F6" stroke-width="12" />
+                      </svg>
+                      <div class="phone-ring-center">
+                        <span class="counter-val">0</span>
+                        <span class="counter-label">Anos de História</span>
+                      </div>
+                    </div>
+
+                    <div class="phone-widgets">
+                      <div class="phone-widget widget-depth">
+                        <div class="widget-icon-box" style="background:rgba(59,130,246,.16);border:1px solid rgba(96,165,250,.28);color:#60a5fa;">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+                        </div>
+                        <div>
+                          <div class="widget-label">História &amp; Cultura</div>
+                          <div class="widget-sub">Propósito e Valores</div>
+                        </div>
+                      </div>
+                      <div class="phone-widget widget-depth">
+                        <div class="widget-icon-box" style="background:rgba(16,185,129,.16);border:1px solid rgba(52,211,153,.28);color:#34d399;">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <div>
+                          <div class="widget-label">Normas &amp; Benefícios</div>
+                          <div class="widget-sub">Trilha Completa</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="phone-home-bar" aria-hidden="true"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="floating-badge floating-ui-badge floating-badge-top">
+                <div class="floating-badge-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/><path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/><path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/><path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/></svg>
+                </div>
+                <div>
+                  <p class="floating-badge-title">25 Anos de História</p>
+                </div>
+              </div>
+
+              <div class="floating-badge floating-ui-badge floating-badge-bottom">
+                <div class="floating-badge-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div>
+                  <p class="floating-badge-title">Conexões Humanas</p>
+                  <p class="floating-badge-sub">Bem-vindo à equipe</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-right-text">
+            <h2 class="text-card-silver-matte">ATEKY</h2>
+            <span class="card-right-sub" id="hero-module-label">Módulo 01 · Integração</span>
+          </div>
+        </div>
       </div>
-      <figure class="hero-logo-scene">
-        <img class="hero-logo" src="assets/images/logo-ateky.png" alt="Logo da Ateky">
-      </figure>
-    </section>
+    </div>
+  </section>
+
+  <div class="course-shell" id="curso">
 
     <main>
       <section class="module-panel" id="modulo-integracao" role="tabpanel" aria-labelledby="tab-integracao" data-panel="integracao">
@@ -552,10 +1703,21 @@
           <button class="button complete-button" type="button" data-complete="integracao" aria-pressed="false">Marcar módulo como concluído</button>
         </div>
 
+        <div class="module-hero-card">
+          <div>
+            <div class="eyebrow">APRENDA A CULTURA ATEKY · INTEGRAÇÃO</div>
+            <h3>Conheça a Ateky<br><span class="accent">e faça parte dessa história.</span></h3>
+            <p>Uma jornada para conhecer nossa história, nossos valores e o jeito humano de criar conexões com as pessoas.</p>
+            <div class="flow">História → Valores → Pertencimento</div>
+          </div>
+          <div class="module-hero-logo-wrap">
+            <img class="module-hero-logo" src="assets/images/logo-ateky.png" alt="Logo da Ateky">
+          </div>
+        </div>
+
         <article class="section-card source-sequence" id="i-sequencia">
           <button class="button source-toggle" id="toggle-source-topics" type="button" aria-controls="i-sequencia">Recolher todos os tópicos</button>
-          <div class="source-chapter-heading"><h4>Integração novos colaboradores</h4></div>
-          <details class="source-topic"><summary>seja bem vindo!</summary><div class="details-body">
+          <details class="source-topic" data-default-open="true"><summary>seja bem vindo!</summary><div class="details-body">
             <div class="video-card">
               <video controls preload="metadata" playsinline>
                 <source src="assets/videos/video-thiago.mp4" type="video/mp4">
@@ -563,7 +1725,7 @@
               </video>
             </div>
           </div></details>
-          <details class="source-topic"><summary>nossa história</summary><div class="details-body">
+          <details class="source-topic" data-default-open="true"><summary>Nossa história (linha do tempo)</summary><div class="details-body">
             <p><strong>2000/2009</strong> – A Ateky iniciou suas atividades como uma loja de equipamentos de informática e materiais de escritório.</p>
             <p><strong>2010/2013</strong> – Em agosto de 2010, a loja expandiu seus serviços, oferecendo acesso à internet via rádio nas cidades de São Ludgero e Tubarão. Nos anos seguintes, a cobertura foi ampliada para municípios vizinhos.</p>
             <p><strong>2014</strong> – Percebendo a necessidade de inovação, em 2014 a Ateky Internet iniciou a instalação de internet por fibra óptica, trazendo maior velocidade e qualidade de conexão aos seus clientes.</p>
@@ -575,7 +1737,7 @@
               <img class="original-slide-image" src="assets/images/significado-nome-ateky.png" alt="Slide original do Canva: o nome Ateky é apresentado letra a letra: A = Adelita, t = Tito/Thiago, e = Elisangela, k = enfeite, y = enfeite.">
             </figure>
           </div></details>
-          <details class="source-topic"><summary>nossa história</summary><div class="details-body">
+          <details class="source-topic"><summary>Nossa história (vídeo)</summary><div class="details-body">
             <div class="video-card">
               <video controls preload="metadata" playsinline aria-label="História da Ateky">
                 <source src="assets/videos/historia-ateky.mp4" type="video/mp4">
@@ -606,42 +1768,86 @@
               </a>
             </figure>
           </div></details>
-          <details class="source-topic"><summary>1. O QUE É CÓDIGO DE ÉTICA E CONDUTA</summary><div class="details-body">
-            <p>O Código de Ética e Conduta é um guia que estabelece normas de comportamento e interações aceitáveis dentro da organização. Ele busca garantir que todas as atividades da Ateky sejam realizadas com integridade e transparência.</p>
+        </article>
+
+        <section class="slide-deck-section" id="i-slides" aria-label="Apresentação em slides de normas e cultura">
+          <div class="slide-deck-toolbar">
+            <div class="slide-deck-title">
+              <span>Apresentação · Normas, Cultura e Benefícios</span>
+              <span class="slide-counter" data-slide-counter>Slide 1 de 43</span>
+            </div>
+            <div class="slide-toolbar-actions">
+              <div class="slide-dropdown">
+                <button class="slide-dropdown-btn" type="button" aria-expanded="false">
+                  <span class="slide-dropdown-label">Selecionar tópico</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="slide-dropdown-menu" hidden></div>
+              </div>
+              <button class="slide-present-btn" type="button" aria-pressed="false">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
+                Modo apresentação
+              </button>
+            </div>
+          </div>
+          <div class="slide-stage">
+            <button class="slide-nav-btn" data-slide-prev type="button" aria-label="Slide anterior">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <div class="slide-chroma-frame">
+              <div class="slide-viewport" id="slide-viewport" tabindex="0">
+                <div class="slide-track" id="slide-track">
+                <article class="slide-item" data-slide-index="0">
+                  <span class="slide-kicker">Cultura, Ética e Conduta</span>
+                  <h3>1. O QUE É CÓDIGO DE ÉTICA E CONDUTA</h3>
+                  <p>O Código de Ética e Conduta é um guia que estabelece normas de comportamento e interações aceitáveis dentro da organização. Ele busca garantir que todas as atividades da Ateky sejam realizadas com integridade e transparência.</p>
             <p>ABRANGÊNCIA: Este documento abrange a todos os colaboradores da Ateky Internet.</p>
-          </div></details>
-          <div class="source-topic-featured source-topic-static"><div class="details-body">
-            <p><strong>2. Nosso NEGÓCIO é proporcionar experiências incríveis, através de conexões.</strong></p>
+                </article>
+                <article class="slide-item" data-slide-index="1">
+                  <span class="slide-kicker">Cultura, Ética e Conduta</span>
+                  <h3>2. Negócio, Missão e Visão</h3>
+                  <p><strong>2. Nosso NEGÓCIO é proporcionar experiências incríveis, através de conexões.</strong></p>
             <p><strong>2.1 Tendo a MISSÃO de conectar pessoas com excelência através da tecnologia e inovação, oferecendo sempre um atendimento humanizado, acolhedor e ágil.</strong></p>
             <p><strong>2.2 Sempre VISANDO alcançar novas conexões, preservando nossos valores.</strong></p>
-          </div></div>
-          <details class="source-topic"><summary>2.3 Valores: nossas práticas</summary><div class="details-body">
-            <p><strong class="value-term">Ética e Honestidade:</strong> Ser verdadeiro, correto e justo.</p>
+                </article>
+                <article class="slide-item" data-slide-index="2">
+                  <span class="slide-kicker">Cultura, Ética e Conduta</span>
+                  <h3>2.3 Valores: nossas práticas</h3>
+                  <p><strong class="value-term">Ética e Honestidade:</strong> Ser verdadeiro, correto e justo.</p>
             <p><strong class="value-term">Empatia:</strong> Se importar e tratar todas as pessoas com respeito e gentileza.</p>
             <p><strong class="value-term">Comprometimento:</strong> Ser ágil e estar comprometido em ajudar e atender a solicitação do cliente.</p>
             <p><strong class="value-term">Resolutividade:</strong> Eliminar burocracias e facilitar a vida das pessoas para que o cliente possa fazer o que mais ama.</p>
-          </div></details>
-          <details class="source-topic"><summary>2.4 Os 4 pilares da ateky</summary><div class="details-body">
-            <p>PESSOAS · HONESTIDADE · CRESCIMENTO · INOVAÇÃO</p>
+                </article>
+                <article class="slide-item" data-slide-index="3">
+                  <span class="slide-kicker">Cultura, Ética e Conduta</span>
+                  <h3>2.4 Os 4 pilares da ateky</h3>
+                  <p>PESSOAS · HONESTIDADE · CRESCIMENTO · INOVAÇÃO</p>
             <img class="original-slide-image" src="assets/images/quatro-pilares-ateky.png" alt="Imagem original dos quatro pilares da Ateky: Pessoas, Honestidade, Crescimento e Inovação.">
-          </div></details>
-          <details class="source-topic"><summary>3.0 PLANO DE CARREIRA</summary><div class="details-body">
-            <p class="source-topic-lead">Junior → Pleno→ Sênior</p>
+                </article>
+                <article class="slide-item" data-slide-index="4">
+                  <span class="slide-kicker">Cultura, Ética e Conduta</span>
+                  <h3>3.0 PLANO DE CARREIRA</h3>
+                  <p class="source-topic-lead">Junior → Pleno→ Sênior</p>
             <p>Cada etapa detém novos desafios</p>
             <p>aumenta a sua responsabilidade e conhecimento</p>
             <p>aumento salariais em cada nível e troca de cargo</p>
-          </div></details>
-          <div class="source-chapter-heading"><h4>4. REMUNERAÇÃO E BENEFÍCIOS</h4></div>
-          <details class="source-topic"><summary>4.1 Salário</summary><div class="details-body">
-            <p>A Ateky Internet efetua o pagamento da remuneração até o quinto dia útil do mês subsequente, garantindo que todos os colaboradores recebam com os devidos descontos legais. O 13º salário é pago em duas parcelas, sendo a primeira até 30 de novembro e a segunda até 20 de dezembro de cada ano, proporcionalmente ao período de trabalho.</p>
-          </div></details>
-          <details class="source-topic"><summary>4.2 Férias</summary><div class="details-body">
-            <p>Os colaboradores têm direito a 30 dias de férias após 12 meses de trabalho, a serem comunicadas pelo DP com 30 dias de antecedência.</p>
+                </article>
+                <article class="slide-item" data-slide-index="5">
+                  <span class="slide-kicker">4. REMUNERAÇÃO E BENEFÍCIOS</span>
+                  <h3>4.1 Salário</h3>
+                  <p>A Ateky Internet efetua o pagamento da remuneração até o quinto dia útil do mês subsequente, garantindo que todos os colaboradores recebam com os devidos descontos legais. O 13º salário é pago em duas parcelas, sendo a primeira até 30 de novembro e a segunda até 20 de dezembro de cada ano, proporcionalmente ao período de trabalho.</p>
+                </article>
+                <article class="slide-item" data-slide-index="6">
+                  <span class="slide-kicker">4. REMUNERAÇÃO E BENEFÍCIOS</span>
+                  <h3>4.2 Férias</h3>
+                  <p>Os colaboradores têm direito a 30 dias de férias após 12 meses de trabalho, a serem comunicadas pelo DP com 30 dias de antecedência.</p>
             <p>O início das férias deve ocorrer respeitando as normas da empresa, garantindo a continuidade das atividades e o bem-estar do colaborador.</p>
             <p>As faltas injustificadas durante o período aquisitivo são somadas e consideradas para a apuração da quantidade de dias efetivos de férias, conforme a tabela abaixo: - Até 5 faltas: 30 dias de férias - De 6 a 14 faltas: 24 dias de férias - De 15 a 23 faltas: 18 dias de férias - De 24 a 32 faltas: 12 dias de férias - Mais de 32 faltas: perda total do direito às férias.</p>
-          </div></details>
-          <details class="source-topic"><summary>4.3 Licenças</summary><div class="details-body">
-            <p>Desde que devidamente comunicadas e comprovadas, a Ateky Internet concede ao colaborador licenças por motivo de:</p>
+                </article>
+                <article class="slide-item" data-slide-index="7">
+                  <span class="slide-kicker">4. REMUNERAÇÃO E BENEFÍCIOS</span>
+                  <h3>4.3 Licenças</h3>
+                  <p>Desde que devidamente comunicadas e comprovadas, a Ateky Internet concede ao colaborador licenças por motivo de:</p>
             <p>3 dias consecutivos, em caso de falecimento de cônjuge ou companheiro(a), ascendente, descendente, irmão ou pessoa declarada em sua CTPS, viva sob sua responsabilidade;</p>
             <p>5 dias úteis, em virtude de casamento civil;</p>
             <p>Por 1 dia, em cada 12 meses de trabalho, em caso de doação de sangue, devidamente comprovada;</p>
@@ -651,12 +1857,16 @@
             <p>Por 1 dia para o recebimento do PIS/PASEP, desde que o respectivo pagamento não se efetue pela empresa ou posto bancário nela localizado;</p>
             <p>Para o Pai por até 2 (dois) dias para acompanhar consultas médicas e exames complementares durante o período de gravidez de sua esposa ou companheira, conforme o inciso 10 do art. 473 CLT.</p>
             <p>Licença maternidade serão concedidos 120 dias de afastamento a partir do atestado do médico obstetra ou então a partir do nascimento</p>
-          </div></details>
-          <details class="source-topic"><summary>4.4 Jornada de trabalho</summary><div class="details-body">
-            <p>A empresa tem jornada de trabalho de 8 horas diárias, 44 horas semanais, 220 horas mensais, respeitando os intervalos previstos e os descansos estabelecidos por lei. - Podendo, de acordo com a necessidade da empresa entrar na escala de atendimento.</p>
-          </div></details>
-          <details class="source-topic"><summary>4.5 PRÊMIO ASSIDUIDADE</summary><div class="details-body">
-            <p>O Prêmio Assiduidade é um benefício de R$ 250,00, destinado aos colaboradores CLT sujeitos ao controle de jornada, com o objetivo de incentivar a pontualidade, o comprometimento e a disciplina.</p>
+                </article>
+                <article class="slide-item" data-slide-index="8">
+                  <span class="slide-kicker">4. REMUNERAÇÃO E BENEFÍCIOS</span>
+                  <h3>4.4 Jornada de trabalho</h3>
+                  <p>A empresa tem jornada de trabalho de 8 horas diárias, 44 horas semanais, 220 horas mensais, respeitando os intervalos previstos e os descansos estabelecidos por lei. - Podendo, de acordo com a necessidade da empresa entrar na escala de atendimento.</p>
+                </article>
+                <article class="slide-item" data-slide-index="9">
+                  <span class="slide-kicker">4. REMUNERAÇÃO E BENEFÍCIOS</span>
+                  <h3>4.5 PRÊMIO ASSIDUIDADE</h3>
+                  <p>O Prêmio Assiduidade é um benefício de R$ 250,00, destinado aos colaboradores CLT sujeitos ao controle de jornada, com o objetivo de incentivar a pontualidade, o comprometimento e a disciplina.</p>
             <p>Período de apuração: do dia 21 ao dia 20 do mês seguinte, com pagamento no primeiro dia útil do mês subsequente.</p>
             <p>Novos colaboradores: direito ao prêmio após 30 dias trabalhados.</p>
             <p>Atrasos: tolerância de até 3 atrasos de, no máximo, 5 minutos cada.</p>
@@ -664,32 +1874,44 @@
             <p>Faltas e afastamentos: ocasionam a perda do prêmio, exceto afastamento por acidente de trabalho de até 3 dias.</p>
             <p>Exceções: compensações por banco de horas dependem de autorização prévia da empresa.</p>
             <p>Importante: o recebimento do prêmio depende do cumprimento das regras durante todo o período de apuração.</p>
-          </div></details>
-          <details class="source-topic"><summary>4.6 salário família</summary><div class="details-body">
-            <p>A empresa se compromete a pagar o salário família a todos os funcionários que fizerem jus ao benefício, mediante a apresentação da certidão de nascimento, carteira de vacinação e comprovante de escolaridade de cada filho do colaborador, que devem ser entregues na admissão e renovados nos meses de maio e novembro de cada ano.</p>
+                </article>
+                <article class="slide-item" data-slide-index="10">
+                  <span class="slide-kicker">4. REMUNERAÇÃO E BENEFÍCIOS</span>
+                  <h3>4.6 salário família</h3>
+                  <p>A empresa se compromete a pagar o salário família a todos os funcionários que fizerem jus ao benefício, mediante a apresentação da certidão de nascimento, carteira de vacinação e comprovante de escolaridade de cada filho do colaborador, que devem ser entregues na admissão e renovados nos meses de maio e novembro de cada ano.</p>
             <p>Em caso de não entrega dos documentos o colaborador perderá o benefício.</p>
-          </div></details>
-          <details class="source-topic"><summary>5. Registro</summary><div class="details-body">
-            <p>Ao ser admitido na Ateky Internet, todo colaborador deverá preencher os questionários fornecidos pela empresa, além de prestar, com exatidão e sob sua responsabilidade, as informações que forem solicitadas.</p>
+                </article>
+                <article class="slide-item" data-slide-index="11">
+                  <span class="slide-kicker">Registro, Ponto e Jornada</span>
+                  <h3>5. Registro</h3>
+                  <p>Ao ser admitido na Ateky Internet, todo colaborador deverá preencher os questionários fornecidos pela empresa, além de prestar, com exatidão e sob sua responsabilidade, as informações que forem solicitadas.</p>
             <p>Quanto a documentação do colaborador, em atendimento a Lei Geral de Proteção de Dados (LGPD) somente será solicitado os documentos exigidos por lei, que, portanto, são essenciais para a formalização do contrato de trabalho e do registro do colaborador, além daqueles que se fizerem necessários.</p>
             <p>Todavia, caso haja necessidade da coleta de dados sensíveis ou dados de terceiros estranhos à relação de trabalho (cônjuge, filhos menores, etc), o colaborador e/ou o titular dos dados estarão cientes acerca da necessidade de tais documentos e da forma como esses dados serão tratados. O colaborador poderá fornecer o seu consentimento de forma livre, inequívoca e informada.</p>
             <p>Como regra geral, no ato da contratação o colaborador deverá apresentar ao setor de Departamento pessoal cópia dos documentos solicitados</p>
-          </div></details>
-          <details class="source-topic"><summary>6. Registro de ponto</summary><div class="details-body">
-            <p>O registro de ponto é feito através de biometria, utilizando um sistema eletrônico validado pelo Inmetro, garantindo que a jornada de trabalho seja devidamente documentada e acompanhada.</p>
+                </article>
+                <article class="slide-item" data-slide-index="12">
+                  <span class="slide-kicker">Registro, Ponto e Jornada</span>
+                  <h3>6. Registro de ponto</h3>
+                  <p>O registro de ponto é feito através de biometria, utilizando um sistema eletrônico validado pelo Inmetro, garantindo que a jornada de trabalho seja devidamente documentada e acompanhada.</p>
             <p>É uma responsabilidade individual registrar corretamente as entradas, saídas para almoço e retornos, evitando penalizações por falhas no registro.</p>
-          </div></details>
-          <details class="source-topic"><summary>6.1 Faltas e Atrasos</summary><div class="details-body">
-            <p>Faltas e atrasos, quando não justificados, impactam diretamente na remuneração dos colaboradores, resultando em descontos salariais. Conforme o artigo 71 da CLT, espera-se que os colaboradores cumpram rigorosamente os horários estipulados para evitar essas penalizações e manter a produtividade da equipe.</p>
+                </article>
+                <article class="slide-item" data-slide-index="13">
+                  <span class="slide-kicker">Registro, Ponto e Jornada</span>
+                  <h3>6.1 Faltas e Atrasos</h3>
+                  <p>Faltas e atrasos, quando não justificados, impactam diretamente na remuneração dos colaboradores, resultando em descontos salariais. Conforme o artigo 71 da CLT, espera-se que os colaboradores cumpram rigorosamente os horários estipulados para evitar essas penalizações e manter a produtividade da equipe.</p>
             <p>É necessário respeitar os horários e manter pontualidade.</p>
-          </div></details>
-          <details class="source-topic"><summary>6.2 Intervalos</summary><div class="details-body">
-            <p>- Serão disponibilizados 5 minutos para café no período da manhã, à partir das 09:00.</p>
+                </article>
+                <article class="slide-item" data-slide-index="14">
+                  <span class="slide-kicker">Registro, Ponto e Jornada</span>
+                  <h3>6.2 Intervalos</h3>
+                  <p>- Serão disponibilizados 5 minutos para café no período da manhã, à partir das 09:00.</p>
             <p>- Horário de almoço é de 1 hora e 30 minutos, iniciando conforme sua jornada de trabalho.</p>
             <p>- No período da tarde, serão disponibilizados 10 minutos, à partir das 15:00.</p>
-          </div></details>
-          <details class="source-topic"><summary>6.3 Alguns pontos de extrema atenção os quais devem ser prevenidos</summary><div class="details-body">
-            <p>De acordo com o artigo 71 da clt, o colaborador não deve realizar menos do que 01:00 de almoço;</p>
+                </article>
+                <article class="slide-item" data-slide-index="15">
+                  <span class="slide-kicker">Registro, Ponto e Jornada</span>
+                  <h3>6.3 Alguns pontos de extrema atenção os quais devem ser prevenidos</h3>
+                  <p>De acordo com o artigo 71 da clt, o colaborador não deve realizar menos do que 01:00 de almoço;</p>
             <p>O intervalo de almoço deve ser realizado no máximo até a sexta hora trabalhada;</p>
             <p>Nunca descumprir a interjornada, intervalo mínimo entre uma jornada e outra de trabalho, que deverá ser de no minino 11 horas;</p>
             <p>Não exceder o limite diário de extras, no máximo 02:00, que serão pagas na folha de pagamento do mês subsequente;</p>
@@ -700,48 +1922,66 @@
             <p>Comunicação: Informar o gestor não garante abono ou banco de horas.</p>
             <p>Horas Extras: Com autorização do gestor, horas a mais podem compensar atrasos e faltas; saldo positivo é pago como hora extra.</p>
             <p>Autorização Prévia: Saídas antecipadas ou faltas precisam de autorização e não garantem abono.</p>
-          </div></details>
-          <details class="source-topic"><summary>7. USO DE EQUIPAMENTOS DE PROTEÇÃO:</summary><div class="details-body">
-            <p>Ateky é uma empresa comprometida com a segurança e a integridade física dos seus colaboradores, por isso, proporciona a todos aqueles que exercem atividades externas ou internas e que exigem a utilização dos equipamentos de proteção, de acordo com os cargos e as respectivas funções, os treinamentos e capacitações necessários quanto a forma correta e a importância do uso destes equipamentos.</p>
+                </article>
+                <article class="slide-item" data-slide-index="16">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>7. USO DE EQUIPAMENTOS DE PROTEÇÃO:</h3>
+                  <p>Ateky é uma empresa comprometida com a segurança e a integridade física dos seus colaboradores, por isso, proporciona a todos aqueles que exercem atividades externas ou internas e que exigem a utilização dos equipamentos de proteção, de acordo com os cargos e as respectivas funções, os treinamentos e capacitações necessários quanto a forma correta e a importância do uso destes equipamentos.</p>
             <p>Além de que a empresa exerce fiscalização rigorosa quanto a utilização correta de todos os equipamentos de proteção que são fornecidos aos colaboradores, e no caso do descumprimento dessa regra poderá resultar em medidas disciplinares e responsabilização por eventuais danos ao equipamento.</p>
-          </div></details>
-          <details class="source-topic"><summary>7.2 Preservação de instalações, materiais e equipamentos:</summary><div class="details-body">
-            <p>É de extrema importância que o colaborador tenha zelo e cuidado com todos os equipamentos que a empresa lhe confiar, tais como: instalações, veículos, máquinas, ferramentas ou quaisquer outros itens.</p>
+                </article>
+                <article class="slide-item" data-slide-index="17">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>7.2 Preservação de instalações, materiais e equipamentos:</h3>
+                  <p>É de extrema importância que o colaborador tenha zelo e cuidado com todos os equipamentos que a empresa lhe confiar, tais como: instalações, veículos, máquinas, ferramentas ou quaisquer outros itens.</p>
             <p><strong>Avaria ou falta de cuidado</strong> em aparelhos, como derramar água/café no notebook ou qualquer outro item podem ser descontados do colaborador, por isso, cuidem como se fosse seu!</p>
             <p>No caso de qualquer anormalidade constatada o colaborador deverá informar imediatamente o setor responsável.</p>
             <p>Não é permitida a saída de colaboradores com qualquer tipo de equipamento, máquinas, ferramentas e documentos sem autorização prévia.</p>
             <p>Devemos zelar pela limpeza e segurança dos equipamentos e senhas</p>
             <p>Não devemos colar vários adesivos ou post it pela mesa ou notebook. Ter somente anotações realmente importantes em seu campo de visão.</p>
-          </div></details>
-          <details class="source-topic"><summary>8. Sigilo das informações</summary><div class="details-body">
-            <p>Todas as informações confiadas ao colaborador durante a execução de suas tarefas e que forem julgadas e declaradas sigilosas pela empresa devem ser preservadas, não revelando-as, nem direta ou indiretamente a terceiros. A quebra de qualquer sigilo da empresa estará sujeita as penalidades previstas em lei.</p>
-          </div></details>
-          <details class="source-topic"><summary>8.1 Sugestões</summary><div class="details-body">
-            <p>Todo colaborador pode e deve sugerir medidas para maior eficiência do serviço e para o desenvolvimento da empresa, reportando-se ao setor responsável ou ao seu superior imediato. Da mesma forma como toda queixa e/ou observação sobre qualquer assunto também deve ser feita ao setor responsável ou ao seu superior hierárquico.</p>
+                </article>
+                <article class="slide-item" data-slide-index="18">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>8. Sigilo das informações</h3>
+                  <p>Todas as informações confiadas ao colaborador durante a execução de suas tarefas e que forem julgadas e declaradas sigilosas pela empresa devem ser preservadas, não revelando-as, nem direta ou indiretamente a terceiros. A quebra de qualquer sigilo da empresa estará sujeita as penalidades previstas em lei.</p>
+                </article>
+                <article class="slide-item" data-slide-index="19">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>8.1 Sugestões</h3>
+                  <p>Todo colaborador pode e deve sugerir medidas para maior eficiência do serviço e para o desenvolvimento da empresa, reportando-se ao setor responsável ou ao seu superior imediato. Da mesma forma como toda queixa e/ou observação sobre qualquer assunto também deve ser feita ao setor responsável ou ao seu superior hierárquico.</p>
             <p>Sendo que reclamações de cunho pessoal não devem ser tratadas em ambientes públicos, como redes sociais ou grupos de whatsapp. Isso permite tratar cada caso com a devida atenção e confidencialidade, garantindo uma solução mais rápida e eficaz.</p>
-          </div></details>
-          <details class="source-topic"><summary>9. Normas da empresa</summary><div class="details-body">
-            <p>É importante que todo colaborador respeite as normas da empresa. A Ateky preza pelo coletivo, dessa forma todos devem manter um comportamento adequado com o seu local de trabalho e com os compromissos assumidos no ato da contratação, sempre com o zelo, disciplina, espírito de colaboração, atenção e competência profissional.</p>
+                </article>
+                <article class="slide-item" data-slide-index="20">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>9. Normas da empresa</h3>
+                  <p>É importante que todo colaborador respeite as normas da empresa. A Ateky preza pelo coletivo, dessa forma todos devem manter um comportamento adequado com o seu local de trabalho e com os compromissos assumidos no ato da contratação, sempre com o zelo, disciplina, espírito de colaboração, atenção e competência profissional.</p>
             <p>Todas as ordens e instruções repassadas pelo superior hierárquico de cada colaborador devem ser acatadas com presteza e consideração, uma vez que no caso de desobediência, indisciplina, insubordinação e desídia no desempenho da sua função, o colaborador estará sujeito à penalidades previstas em lei, tais como: advertência, suspensão e demissão por justa causa.</p>
             <p><strong>Direito de Recusa:</strong> Nenhum colaborador é obrigado a cumprir ordens que sejam absurdas, ilegais ou que violem os princípios éticos da empresa.</p>
             <p><strong>Procedimento em Caso de Ordem Inadequada:</strong> Caso receba uma ordem que considere absurda ou ilegal, o colaborador não deve executar a ordem.</p>
             <p>Comunique imediatamente o ocorrido ao seu superior hierárquico ou ao departamento de Recursos Humanos.</p>
             <p>Registrar por escrito a ordem recebida e os motivos pelos quais a considera inadequada através do e-mail reclamacao@ateky.com.br.</p>
-          </div></details>
-          <details class="source-topic"><summary>9.1 Conduta esperada</summary><div class="details-body">
-            <p>O colaborador deve manter tanto em sua vida privada, quanto profissional conduta compatível com a dignidade do cargo ocupado e com a reputação do quadro de pessoal da empresa.</p>
+                </article>
+                <article class="slide-item" data-slide-index="21">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>9.1 Conduta esperada</h3>
+                  <p>O colaborador deve manter tanto em sua vida privada, quanto profissional conduta compatível com a dignidade do cargo ocupado e com a reputação do quadro de pessoal da empresa.</p>
             <p>A Ateky preza pelo respeito mútuo entre todos os envolvidos nesta relação de trabalho, por isso, recomenda-se a todos o desenvolvimento de empatia, solidariedade e espirito de colaboração. Jamais faça algo ao seu colega de trabalho, que não gostaria que fizessem com você .</p>
-          </div></details>
-          <details class="source-topic"><summary>9.2 Apresentação pessoal</summary><div class="details-body">
-            <p>O colaborador representa a imagem da empresa perante os seus clientes, fornecedores e demais pessoas com as quais mantém relacionamento profissional. Por isso é de fundamental importância usar corretamente o uniforme ou a vestimenta fornecida ou recomendada pela empresa em condições normais de higiene e aparência.</p>
+                </article>
+                <article class="slide-item" data-slide-index="22">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>9.2 Apresentação pessoal</h3>
+                  <p>O colaborador representa a imagem da empresa perante os seus clientes, fornecedores e demais pessoas com as quais mantém relacionamento profissional. Por isso é de fundamental importância usar corretamente o uniforme ou a vestimenta fornecida ou recomendada pela empresa em condições normais de higiene e aparência.</p>
             <p>Da mesma forma são importantes os cuidados com a imagem pessoal de cada colaborador, tais como: cabelo, barba, unha e maquiagem, que devem sempre estar alinhados e de acordo com a função exercida.</p>
-          </div></details>
-          <details class="source-topic"><summary>9.3 Uniformes</summary><div class="details-body">
-            <p>É obrigatório o uso do uniforme em todos os dias da jornada de trabalho de acordo com a padronização de cada setor, sendo <strong>proibida a sua utilização fora do horário de expediente</strong>. Em eventos que o colaborador estiver representando a Ateky(palestras ou treinamentos) e houver registro de ponto, se torna obrigatório o uso do uniforme. Exceções serão comunicadas. Nas redes sociais, é permitido postar fotos/vídeos com o uniforme quando for de cunho profissional, representando a empresa, enaltecendo seu papel. Porém, casos onde for postado utilizando uniforme em vídeos de dancinha ou vlog da vida pessoal serão proibidos. Nos casos que forem constatados a pessoa será advertida conforme previsto neste manual.</p>
+                </article>
+                <article class="slide-item" data-slide-index="23">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>9.3 Uniformes</h3>
+                  <p>É obrigatório o uso do uniforme em todos os dias da jornada de trabalho de acordo com a padronização de cada setor, sendo <strong>proibida a sua utilização fora do horário de expediente</strong>. Em eventos que o colaborador estiver representando a Ateky(palestras ou treinamentos) e houver registro de ponto, se torna obrigatório o uso do uniforme. Exceções serão comunicadas. Nas redes sociais, é permitido postar fotos/vídeos com o uniforme quando for de cunho profissional, representando a empresa, enaltecendo seu papel. Porém, casos onde for postado utilizando uniforme em vídeos de dancinha ou vlog da vida pessoal serão proibidos. Nos casos que forem constatados a pessoa será advertida conforme previsto neste manual.</p>
             <p>Da mesma forma como é de responsabilidade exclusiva do colaborador o uso correto e a devida manutenção e zelo do uniforme que lhe foi confiado, os quais devem estar sempre limpos, passados e no caso das botas, devidamente limpas. Em caso de roubo, extravio ou danos e desgastes, o departamento responsável deve ser imediatamente comunicado. As peças danificadas ou manchadas devem ser devolvidas para que a devida substituição ocorra. Em caso de desligamento, o colaborador deverá entregar todos os uniformes no ato do desligamento da empresa.</p>
-          </div></details>
-          <details class="source-topic"><summary>9.4 Uniformes dos colaboradores internos:</summary><div class="details-body">
-            <p>Apesar da empresa não fornecer a parte de baixo da vestimenta, em função do padrão de atendimento ao público e aos princípios e valores por ela defendidos, é recomendado a todos os colaboradores internos que procurem usar roupas compatíveis com o ambiente de trabalho.</p>
+                </article>
+                <article class="slide-item" data-slide-index="24">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>9.4 Uniformes dos colaboradores internos:</h3>
+                  <p>Apesar da empresa não fornecer a parte de baixo da vestimenta, em função do padrão de atendimento ao público e aos princípios e valores por ela defendidos, é recomendado a todos os colaboradores internos que procurem usar roupas compatíveis com o ambiente de trabalho.</p>
             <p><strong class="icon-heading"><svg class="ui-icon ui-icon-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> Vestimenta padrão:</strong></p>
             <p>Para homens: Calça ou bermuda jeans sem rasgos ou de alfaiataria.</p>
             <p>Para mulheres: Calça ou bermuda jeans sem rasgos, de alfaiataria ou saias abaixo do joelho, sem fendas ou rasgos.</p>
@@ -751,86 +1991,138 @@
             <p><strong class="icon-heading"><svg class="ui-icon ui-icon-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg> Os seguintes itens são proibidos:</strong></p>
             <p>Leggings e calças moletom;</p><p>Chinelos ou calçados sem fechos no calcanhar;</p><p>Roupas curtas/decotadas/rasgadas;</p>
             <p>Bonés, gorros, toucas, lenços ou qualquer tipo de acessórios semelhantes;</p><p>Óculos escuro.</p>
-          </div></details>
-          <details class="source-topic"><summary>9.5 Frota</summary><div class="details-body">
-            <p>A utilização de veículos da empresa está condicionada à execução de serviços, portanto, não é permitido usar os veículos para viagens particulares. Os custos relativos ao uso indevido de veículos da empresa poderão ser descontados no pagamento do salário do colaborador responsável.</p>
+                </article>
+                <article class="slide-item" data-slide-index="25">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>9.5 Frota</h3>
+                  <p>A utilização de veículos da empresa está condicionada à execução de serviços, portanto, não é permitido usar os veículos para viagens particulares. Os custos relativos ao uso indevido de veículos da empresa poderão ser descontados no pagamento do salário do colaborador responsável.</p>
             <p>O colaborador será responsável por quaisquer danos e depreciações no veículo que lhe for confiado, nos casos em que comprovadamente agir com dolo ou culpa, de acordo com termo de responsabilidade assinado no ato de entrega.</p>
             <p>Toda e qualquer infração de trânsito cometida pelo colaborador com o veículo da empresa será de sua responsabilidade, cabendo a ele, de imediato, preencher formulário de identificação do condutor infrator, responsabilizando-se pela infração e, consequentemente, assumindo a pontuação em sua CNH, bem como o pagamento da multa pecuniária aplicada.</p>
             <p>É obrigatório a realização de Check List semanalmente para diagnóstico e inspeção de avarias e manutenções preventivas.</p>
-          </div></details>
-          <details class="source-topic"><summary>9.5.1 Frota</summary><div class="details-body">
-            <p>Além disso, os seguintes procedimentos deverão ser seguidos:</p>
+                </article>
+                <article class="slide-item" data-slide-index="26">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>9.5.1 Frota</h3>
+                  <p>Além disso, os seguintes procedimentos deverão ser seguidos:</p>
             <p>Agendamento: O agendamento do veículo deve ser feito com antecedência apenas com o supervisor de agendamento. Não será permitido utilizar o veículo sem agendamento prévio.</p>
             <p>Devolução do veículo: Ao chegar de volta à empresa, o veículo deve ser guardado na garagem e a chave entregue ao responsável pelo agendamento.</p>
             <p>Abastecimento: Caso seja necessário abastecer o veículo, o colaborador deve seguir os seguintes passos:</p>
             <p>Tirar uma foto do painel do carro antes de abastecer, mostrando a quilometragem.</p>
             <p>Tirar uma foto da placa do veículo.</p>
             <p>Tirar uma foto da notinha fiscal do abastecimento.</p>
-          </div></details>
-          <details class="source-topic"><summary>9.6 Onde estacionar os veiculos particulares</summary><div class="details-body">
-            <p>Recomenda-se não estacionar carros e motos em frente ao lado das lojas Ateky. Esses espaços são únicos e exclusivos para os clientes. Prezamos sempre pela empatia, por isso, pense no próximo sempre, é parte da cultura da Ateky.</p>
+                </article>
+                <article class="slide-item" data-slide-index="27">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>9.6 Onde estacionar os veiculos particulares</h3>
+                  <p>Recomenda-se não estacionar carros e motos em frente ao lado das lojas Ateky. Esses espaços são únicos e exclusivos para os clientes. Prezamos sempre pela empatia, por isso, pense no próximo sempre, é parte da cultura da Ateky.</p>
             <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/mapa-historico-sao-ludgero.png" alt="Mapa aéreo das áreas próximas à Ateky Internet em São Ludgero, com limites destacados em cores.">
             </figure>
-          </div></details>
-          <details class="source-topic"><summary>10 Conservação do ambiente</summary><div class="details-body">
-            <p>Além da apresentação pessoal, é fundamental que o ambiente de trabalho também seja adequado. Dessa forma, é responsabilidade do colaborador zelar pela organização do seu respectivo local de trabalho, bem como nas demais dependências da empresa.</p>
+                </article>
+                <article class="slide-item" data-slide-index="28">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>10 Conservação do ambiente</h3>
+                  <p>Além da apresentação pessoal, é fundamental que o ambiente de trabalho também seja adequado. Dessa forma, é responsabilidade do colaborador zelar pela organização do seu respectivo local de trabalho, bem como nas demais dependências da empresa.</p>
             <p>Se pegou algo, devolva à mesma pessoa.</p><p>Se usou algum objeto, coloque no mesmo lugar.</p><p>Se sujou, limpe.</p>
-          </div></details>
-          <details class="source-topic"><summary>10.1 Lanche na mesa</summary><div class="details-body">
-            <p>É proibido consumir alimentos, frutas, balas e chicletes e afins na mesa de trabalho. O lanche sempre deve ser feito no refeitório dentro do período permitido. Abrir embalagens de comida ou latas na mesa é proíbido. Latas em cima da mesa não são permitidas.</p>
-          </div></details>
-          <details class="source-topic"><summary>10.2 Comércio</summary><div class="details-body">
-            <p>Não é permitido nenhuma compra e/ou venda de roupas, alimentos, sapatos, jóias, cosméticos ou qualquer tipo de produto ou serviço, bem como promover empréstimo de dinheiro nas dependências da empresa.</p>
-          </div></details>
-          <details class="source-topic"><summary>10.3 Fumantes</summary><div class="details-body">
-            <p>Se você é fumante, lembre-se de que nem todas as pessoas ao seu redor sentem-se à vontade com esta situação. Por isso, não é permitido fumar em ambientes internos da empresa, veículos a serviço da Ateky e na residência, no estabelecimento comercial do cliente. Em frente a Ateky também não é permitido.</p>
-          </div></details>
-          <details class="source-topic"><summary>10.4 Bebidas alcoólicas</summary><div class="details-body">
-            <p>É proibido o consumo de álcool no ambiente de trabalho ou em horários próximos ao início da jornada.</p>
-          </div></details>
-          <details class="source-topic"><summary>11. Câmeras de segurança</summary><div class="details-body"><p>Para maior segurança da empresa e de seus colaboradores, informamos que a empresa conta com um sistema de monitoramento de câmeras de segurança em todo o ambiente interno e externo, exceto em locais privativos, como banheiros. Além da captura de imagens, as câmeras também gravam áudio, sendo ambas as formas de registro utilizadas exclusivamente para fins de segurança, em conformidade com a legislação vigente e o termo assinado na contratação.</p></div></details>
-          <details class="source-topic"><summary>12.1 Aparelho celular corporativo</summary><div class="details-body">
-            <p>Para colaboradores com direito a aparelho celular corporativo, cabe a responsabilidade de fazer o uso adequado do aparelho, com os devidos cuidados, zelo e responsabilidades de acordo em conformidade com o termo de recebimento de aparelho celular corporativo.</p>
-          </div></details>
-          <details class="source-topic"><summary>12.2 Aparelho celular particular</summary><div class="details-body">
-            <p>Embora não seja proibido o uso de aparelho celular particular durante o horário de trabalho, a empresa recomenda que essa utilização ocorra de modo responsável e coerente, não podendo interferir no desempenho das atividades do colaborador.</p>
-          </div></details>
-          <details class="source-topic"><summary>12.3 Assistir vídeos</summary><div class="details-body"><p>Não é permitido acessar vídeos de youtube ou quaisquer outros em seu computador de trabalho. A empresa não proíbe ouvir música de youtube e das plataformas, mas qualquer conteúdo que não seja relacionado ao seu trabalho é proibido.</p></div></details>
-          <details class="source-topic"><summary>14. Palestras e treinamentos</summary><div class="details-body"><p>Com intuito de melhor capacitar e orientar seus colaboradores a Ateky conta com parceiros para palestras e treinamentos mensais, também como treinamentos técnicos de segurança e capacitação com a plataforma da empresa, além de palestras organizacionais e motivacionais. Com isso é de total importância a participação de todos os colaboradores nos horários e datas estipuladas. A participação ativa contribui para o desenvolvimento individual e coletivo, além de alinhar os objetivos da empresa com as práticas mais atualizadas. O não comparecimento ou atrasos constantes podem comprometer o aproveitamento das oportunidades oferecidas, por isso, a presença de todos é altamente valorizada.</p></div></details>
-          <details class="source-topic"><summary>15. Penalidades</summary><div class="details-body">
-            <p>O colaborador que deixar de cumprir com todas as obrigações contidas neste manual estará sujeito as seguintes penalidades:</p>
+                </article>
+                <article class="slide-item" data-slide-index="29">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>10.1 Lanche na mesa</h3>
+                  <p>É proibido consumir alimentos, frutas, balas e chicletes e afins na mesa de trabalho. O lanche sempre deve ser feito no refeitório dentro do período permitido. Abrir embalagens de comida ou latas na mesa é proíbido. Latas em cima da mesa não são permitidas.</p>
+                </article>
+                <article class="slide-item" data-slide-index="30">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>10.2 Comércio</h3>
+                  <p>Não é permitido nenhuma compra e/ou venda de roupas, alimentos, sapatos, jóias, cosméticos ou qualquer tipo de produto ou serviço, bem como promover empréstimo de dinheiro nas dependências da empresa.</p>
+                </article>
+                <article class="slide-item" data-slide-index="31">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>10.3 Fumantes</h3>
+                  <p>Se você é fumante, lembre-se de que nem todas as pessoas ao seu redor sentem-se à vontade com esta situação. Por isso, não é permitido fumar em ambientes internos da empresa, veículos a serviço da Ateky e na residência, no estabelecimento comercial do cliente. Em frente a Ateky também não é permitido.</p>
+                </article>
+                <article class="slide-item" data-slide-index="32">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>10.4 Bebidas alcoólicas</h3>
+                  <p>É proibido o consumo de álcool no ambiente de trabalho ou em horários próximos ao início da jornada.</p>
+                </article>
+                <article class="slide-item" data-slide-index="33">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>11. Câmeras de segurança</h3>
+                  <p>Para maior segurança da empresa e de seus colaboradores, informamos que a empresa conta com um sistema de monitoramento de câmeras de segurança em todo o ambiente interno e externo, exceto em locais privativos, como banheiros. Além da captura de imagens, as câmeras também gravam áudio, sendo ambas as formas de registro utilizadas exclusivamente para fins de segurança, em conformidade com a legislação vigente e o termo assinado na contratação.</p>
+                </article>
+                <article class="slide-item" data-slide-index="34">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>12.1 Aparelho celular corporativo</h3>
+                  <p>Para colaboradores com direito a aparelho celular corporativo, cabe a responsabilidade de fazer o uso adequado do aparelho, com os devidos cuidados, zelo e responsabilidades de acordo em conformidade com o termo de recebimento de aparelho celular corporativo.</p>
+                </article>
+                <article class="slide-item" data-slide-index="35">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>12.2 Aparelho celular particular</h3>
+                  <p>Embora não seja proibido o uso de aparelho celular particular durante o horário de trabalho, a empresa recomenda que essa utilização ocorra de modo responsável e coerente, não podendo interferir no desempenho das atividades do colaborador.</p>
+                </article>
+                <article class="slide-item" data-slide-index="36">
+                  <span class="slide-kicker">Normas, Conduta e Ambiente</span>
+                  <h3>12.3 Assistir vídeos</h3>
+                  <p>Não é permitido acessar vídeos de youtube ou quaisquer outros em seu computador de trabalho. A empresa não proíbe ouvir música de youtube e das plataformas, mas qualquer conteúdo que não seja relacionado ao seu trabalho é proibido.</p>
+                </article>
+                <article class="slide-item" data-slide-index="37">
+                  <span class="slide-kicker">Desenvolvimento, Segurança e Encerramento</span>
+                  <h3>14. Palestras e treinamentos</h3>
+                  <p>Com intuito de melhor capacitar e orientar seus colaboradores a Ateky conta com parceiros para palestras e treinamentos mensais, também como treinamentos técnicos de segurança e capacitação com a plataforma da empresa, além de palestras organizacionais e motivacionais. Com isso é de total importância a participação de todos os colaboradores nos horários e datas estipuladas. A participação ativa contribui para o desenvolvimento individual e coletivo, além de alinhar os objetivos da empresa com as práticas mais atualizadas. O não comparecimento ou atrasos constantes podem comprometer o aproveitamento das oportunidades oferecidas, por isso, a presença de todos é altamente valorizada.</p>
+                </article>
+                <article class="slide-item" data-slide-index="38">
+                  <span class="slide-kicker">Desenvolvimento, Segurança e Encerramento</span>
+                  <h3>15. Penalidades</h3>
+                  <p>O colaborador que deixar de cumprir com todas as obrigações contidas neste manual estará sujeito as seguintes penalidades:</p>
             <p><strong>Advertência verbal:</strong> aviso verbal, não podendo ser dado na frente de outros colaboradores;</p>
             <p><strong>Advertência escrita:</strong> Documento com o feedback descrito, necessário assinatura;</p>
             <p><strong>Suspensão:</strong> o empregador suspende o funcionário por até 30 dias;</p>
             <p><strong>Demissão:</strong> o colaborador pode ser dispensado por justa causa, nos casos em que ficar comprovado a ocorrência de falta grave ou descumprimento das obrigações decorrentes do contrato de trabalho e do presente regulamento interno;</p>
-          </div></details>
-          <details class="source-topic"><summary>16. ACIDENTES, QUASE-ACIDENTES E POTENCIAL DE RISCO.</summary><div class="details-body">
-            <p>Todo colaborador deve comunicar imediatamente todo e qualquer acidente, quase-acidente ou potencial de risco que observar ao setor responsável, independente do potencial de gravidade.</p>
+                </article>
+                <article class="slide-item" data-slide-index="39">
+                  <span class="slide-kicker">Desenvolvimento, Segurança e Encerramento</span>
+                  <h3>16. ACIDENTES, QUASE-ACIDENTES E POTENCIAL DE RISCO.</h3>
+                  <p>Todo colaborador deve comunicar imediatamente todo e qualquer acidente, quase-acidente ou potencial de risco que observar ao setor responsável, independente do potencial de gravidade.</p>
             <p><strong>Acidente:</strong> considera-se qualquer evento que resulte em lesão.</p>
             <p><strong>Quase acidente:</strong> evento sem lesão com potencial de trazer risco a vida ou integridade física de qualquer pessoa.</p>
             <p><strong>Potencial de risco:</strong> situação que pode ocasionar acidente.</p>
-          </div></details>
-          <details class="source-topic"><summary>16.1 Primeiros socorros</summary><div class="details-body">
-            <p>Em caso de acidentes a primeira providência a ser tomada é o socorro à vítima. Porém, caso o colaborador não tenha participado de treinamento em primeiros socorros, recomenda-se a convocação de quem esteja treinado.</p>
+                </article>
+                <article class="slide-item" data-slide-index="40">
+                  <span class="slide-kicker">Desenvolvimento, Segurança e Encerramento</span>
+                  <h3>16.1 Primeiros socorros</h3>
+                  <p>Em caso de acidentes a primeira providência a ser tomada é o socorro à vítima. Porém, caso o colaborador não tenha participado de treinamento em primeiros socorros, recomenda-se a convocação de quem esteja treinado.</p>
             <p>Todo acidente deve ser imediatamente informado ao setor responsável da empresa, a fim de que os procedimentos de investigação da sua causa sejam iniciados imediatamente.</p>
-          </div></details>
-          <details class="source-topic"><summary>HISTÓRIAS CATIVANTES</summary><div class="details-body">
-            <p>É um projeto que nasceu para ajudar pessoas, com foco no cliente que possa estar passando por necessidades, principalmente de saúde, financeira ou emocional.</p>
+                </article>
+                <article class="slide-item" data-slide-index="41">
+                  <span class="slide-kicker">Desenvolvimento, Segurança e Encerramento</span>
+                  <h3>HISTÓRIAS CATIVANTES</h3>
+                  <p>É um projeto que nasceu para ajudar pessoas, com foco no cliente que possa estar passando por necessidades, principalmente de saúde, financeira ou emocional.</p>
             <p>Vocês podem receber histórias assim através de ligação, whatsapp ou até presencialmente.</p>
             <p>A empresa valida o caso e busca ajudar, seja de forma paleativa ou então definitiva (se for possível), mostrando o lado humanizado e sensibilizado que a empresa preza em ter para com o cliente.</p>
-          </div></details>
-          <details class="source-topic"><summary>Boa jornada!</summary><div class="details-body"><p>Boa jornada!</p></div></details>
+                </article>
+                <article class="slide-item" data-slide-index="42">
+                  <span class="slide-kicker">Desenvolvimento, Segurança e Encerramento</span>
+                  <h3>Boa jornada!</h3>
+                  <p>Boa jornada!</p>
+                </article>
+                </div>
+              </div>
+            </div>
+            <button class="slide-nav-btn" data-slide-next type="button" aria-label="Próximo slide">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="slide-hint">Use as setas ← → ou arraste o slide com o mouse para avançar</div>
+        </section>
 
-          <div class="qr-section" id="prova" aria-labelledby="qr-title">
+        <div class="qr-section" id="prova" aria-labelledby="qr-title">
             <div>
               <div class="qr-label">Etapa final · sua evolução importa</div>
               <h2 id="qr-title">Prova de Integração</h2>
               <p>Escaneie o QR code para responder à prova. Suas respostas nos ajudam a entender o que ficou claro e onde ainda podemos trabalhar juntos.</p>
             </div>
-            <img class="qr-image" src="assets/images/prova-integracao.png" alt="QR code para acessar a prova de integração">
-          </div>
-        </article>
+          <img class="qr-image" src="assets/images/prova-integracao.png" alt="QR code para acessar a prova de integração">
+        </div>
       </section>
 
       <section class="module-panel" id="modulo-atendimento" role="tabpanel" aria-labelledby="tab-atendimento" data-panel="atendimento" hidden>
@@ -839,228 +2131,259 @@
           <button class="button complete-button" type="button" data-complete="atendimento" aria-pressed="false">Marcar módulo como concluído</button>
         </div>
 
-        <article class="section-card source-sequence" id="a-sequencia">
-          <button class="button source-toggle" id="toggle-atendimento-topics" type="button" aria-controls="a-sequencia">Recolher todos os tópicos</button>
-          <div class="source-chapter-heading"><h4>Atendimento ao cliente · Módulo 1</h4></div>
+        <div class="module-hero-card">
+          <div>
+            <div class="eyebrow">APRENDA A CONECTAR · ATENDIMENTO</div>
+            <h3>Quem acolhe bem,<br><span class="accent">conduz à solução certa.</span></h3>
+            <p>Pratique a escuta, a empatia e uma comunicação clara para transformar cada contato em uma boa experiência.</p>
+            <div class="flow">Escuta → Empatia → Clareza → Solução</div>
+          </div>
+          <div class="module-hero-logo-wrap">
+            <img class="module-hero-logo" src="assets/images/logo-ateky.png" alt="Logo da Ateky">
+          </div>
+        </div>
 
-          <details class="source-topic"><summary>1. Atendimento ao cliente · Mód. 1</summary><div class="details-body">
-            <figure class="original-slide-figure">
+        <section class="slide-deck-section" id="a-slides" aria-label="Apresentação em slides de Atendimento ao cliente">
+          <div class="slide-deck-toolbar">
+            <div class="slide-deck-title">
+              <span>Apresentação · Atendimento ao cliente</span>
+              <span class="slide-counter" data-slide-counter>Slide 1 de 31</span>
+            </div>
+            <div class="slide-toolbar-actions">
+              <div class="slide-dropdown">
+                <button class="slide-dropdown-btn" type="button" aria-expanded="false">
+                  <span class="slide-dropdown-label">Selecionar tópico</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div class="slide-dropdown-menu" hidden></div>
+              </div>
+              <button class="slide-present-btn" type="button" aria-pressed="false">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
+                Modo apresentação
+              </button>
+            </div>
+          </div>
+          <div class="slide-stage">
+            <button class="slide-nav-btn" data-slide-prev type="button" aria-label="Slide anterior">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <div class="slide-chroma-frame">
+              <div class="slide-viewport" tabindex="0">
+                <div class="slide-track">
+                <article class="slide-item" data-slide-index="0">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>1. Atendimento ao cliente · Mód. 1</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-01.png" alt="Slide 1: Atendimento ao Cliente Mód. 1">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>2. O que é Atendimento na sua opinião?</summary><div class="details-body">
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="1">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>2. O que é Atendimento na sua opinião?</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-02.png" alt="Slide 2: O que é Atendimento na sua opinião?">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>3. O que é atender</summary><div class="details-body">
-            <p>É o ato de cuidar e prestar atenção às pessoas que nos procuram.</p>
+                </article>
+                <article class="slide-item" data-slide-index="2">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>3. O que é atender</h3>
+                  <p>É o ato de cuidar e prestar atenção às pessoas que nos procuram.</p>
             <p>É muito mais do que apenas responder a solicitações: é oferecer atenção genuína e solucionar necessidades.</p>
-          </div></details>
-
-          <details class="source-topic"><summary>4. O que preciso ter/desenvolver em meus atendimentos?</summary><div class="details-body">
-            <p>O QUE PRECISO TER/DESENVOLVER EM MEUS ATENDIMENTOS?</p>
-          </div></details>
-
-          <details class="source-topic"><summary>5. Responsabilidade, Competência e Adaptabilidade</summary><div class="details-body">
-            <p><strong>Responsabilidade:</strong> Ser consciente da importância do atendimento. Você é a ponte entre cliente e empresa.</p>
-            <p><strong>Competência:</strong> Estar preparado para lidar com diversas situações. Você precisa se antecipar.</p>
-            <p><strong>Adaptabilidade:</strong> Ajustar a abordagem conforme o perfil e as necessidades do cliente.</p>
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="3">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>4. O que preciso ter/desenvolver em meus atendimentos?</h3>
+                  <p>O QUE PRECISO TER/DESENVOLVER EM MEUS ATENDIMENTOS?</p>
+                </article>
+                <article class="slide-item" data-slide-index="4">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>5. Responsabilidade, Competência e Adaptabilidade</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-05.png" alt="Slide 5: Responsabilidade, Competência e Adaptabilidade">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>6. Roteiro de Atendimento</summary><div class="details-body">
-            <p><strong>Recepcionar:</strong> Receber o cliente de forma acolhedora e transmitir uma imagem positiva.</p>
-            <p><strong>Informar:</strong> Esclarecer dúvidas e fornecer informações precisas.</p>
-            <p><strong>Orientar:</strong> Apresentar soluções e ajudar o cliente a tomar decisões informadas.</p>
-            <p><strong>Filtrar:</strong> Identificar as necessidades reais do cliente.</p>
-            <p><strong>Amenizar:</strong> Acalmar situações tensas, demonstrando empatia.</p>
-            <p><strong>Agilizar:</strong> Evitar atrasos e otimizar o tempo do cliente.</p>
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="5">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>6. Roteiro de Atendimento</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-06.png" alt="Slide 6: Roteiro de Atendimento">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>7. Como Realizar um Atendimento de Qualidade?</summary><div class="details-body">
-            <p><strong>Escuta Ativa:</strong> Preste atenção ao que o cliente está dizendo.</p>
-            <p><strong>Consideração:</strong> Leve em conta os sentimentos e emoções do cliente, como nervosismo ou frustração.</p>
-            <p><strong>Compreensão:</strong> Reconheça a importância do cliente para o sucesso da empresa.</p>
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="6">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>7. Como Realizar um Atendimento de Qualidade?</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-07.png" alt="Slide 7: Como Realizar um Atendimento de Qualidade?">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>8. Encerramento do Atendimento</summary><div class="details-body">
-            <p><strong>Finalização Cuidadosa:</strong> Agradeça o contato do cliente, pergunte se há mais algo em que possa ajudar, e deseje-lhe um bom dia/semana.</p>
-            <p><strong>Pesquisa de Satisfação:</strong> Encaminhe o cliente para uma pesquisa de pós-atendimento para melhorar continuamente.</p>
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="7">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>8. Encerramento do Atendimento</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-08.png" alt="Slide 8: Encerramento do Atendimento">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>9. Técnicas para um Atendimento Excelente</summary><div class="details-body">
-            <p><strong>Acolhimento:</strong> Faça o cliente se sentir especial;</p>
-            <p><strong>Positividade:</strong> Demonstre uma atitude positiva em todas as interações;</p>
-            <p><strong>Comunicação:</strong> Comunique-se de forma clara e evite mal-entendidos;</p>
-            <p><strong>Alegria:</strong> “Faça do limão a limonada”, mostre entusiasmo ao prestar o serviço;</p>
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="8">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>9. Técnicas para um Atendimento Excelente</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-09.png" alt="Slide 9: Técnicas para um Atendimento Excelente">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>10. O que Evitar no Atendimento</summary><div class="details-body">
-            <p><strong>Tratamento informal:</strong> Evite chamar o cliente de "meu amor", "querido", ou outras expressões semelhantes. Use o nome do cliente e trate-o com formalidade ("senhor" ou "senhora").</p>
-            <p><strong>Demonstrar irritação ou cansaço:</strong> Se estiver enfrentando problemas pessoais, deixe-os fora do ambiente de trabalho.</p>
-            <p><strong>Interromper o cliente:</strong> Deixe-o falar sem ser interrompido.</p>
-            <p><strong>Mostrar insegurança:</strong> Transmita confiança em suas respostas.</p>
-            <p><strong>Dizer "não sei" sem uma solução:</strong> Se não souber uma informação, peça um momento para verificar e retornar com a resposta.</p>
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="9">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>10. O que Evitar no Atendimento</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-10.png" alt="Slide 10: O que Evitar no Atendimento">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>11. Tipos de Clientes: Impaciente</summary><div class="details-body">
-            <p><strong>Impaciente:</strong> Insistente e, às vezes, sarcástico.</p>
+                </article>
+                <article class="slide-item" data-slide-index="10">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>11. Tipos de Clientes: Impaciente</h3>
+                  <p><strong>Impaciente:</strong> Insistente e, às vezes, sarcástico.</p>
             <p><strong>Como lidar:</strong> Seja breve e cortês, transmitindo segurança e autocontrole.</p>
-          </div></details>
-
-          <details class="source-topic"><summary>12. Tipos de Clientes: Silencioso</summary><div class="details-body">
-            <p><strong>Silencioso:</strong> Pouco comunicativo, aparenta cansaço.</p>
+                </article>
+                <article class="slide-item" data-slide-index="11">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>12. Tipos de Clientes: Silencioso</h3>
+                  <p><strong>Silencioso:</strong> Pouco comunicativo, aparenta cansaço.</p>
             <p><strong>Como lidar:</strong> Induza ao diálogo com perguntas claras e demonstrando atenção.</p>
-          </div></details>
-
-          <details class="source-topic"><summary>13. Tipos de Clientes: Agitado</summary><div class="details-body">
-            <p><strong>Agitado:</strong> Interrompe constantemente e não tem paciência para explicações.</p>
+                </article>
+                <article class="slide-item" data-slide-index="12">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>13. Tipos de Clientes: Agitado</h3>
+                  <p><strong>Agitado:</strong> Interrompe constantemente e não tem paciência para explicações.</p>
             <p><strong>Como lidar:</strong> Mantenha a calma e fale de forma clara e objetiva.</p>
-          </div></details>
-
-          <details class="source-topic"><summary>14. Tipos de Clientes: De Bom Senso</summary><div class="details-body">
-            <p><strong>De Bom Senso:</strong> Amável e inteligente.</p>
+                </article>
+                <article class="slide-item" data-slide-index="13">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>14. Tipos de Clientes: De Bom Senso</h3>
+                  <p><strong>De Bom Senso:</strong> Amável e inteligente.</p>
             <p><strong>Como lidar:</strong> Demonstre atenção e mantenha um clima de simpatia.</p>
-          </div></details>
-
-          <details class="source-topic"><summary>15. Tipos de Clientes: Bem-Humorado</summary><div class="details-body">
-            <p><strong>Bem-Humorado:</strong> Agradável, mas pode desviar do assunto.</p>
+                </article>
+                <article class="slide-item" data-slide-index="14">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>15. Tipos de Clientes: Bem-Humorado</h3>
+                  <p><strong>Bem-Humorado:</strong> Agradável, mas pode desviar do assunto.</p>
             <p><strong>Como lidar:</strong> Conduza a conversa com habilidade para mantê-lo no foco.</p>
-          </div></details>
-
-          <details class="source-topic"><summary>16. Tipos de Clientes: Inteligente</summary><div class="details-body">
-            <p><strong>Inteligente:</strong> Conhece bem os assuntos e não tolera argumentos fracos.</p>
+                </article>
+                <article class="slide-item" data-slide-index="15">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>16. Tipos de Clientes: Inteligente</h3>
+                  <p><strong>Inteligente:</strong> Conhece bem os assuntos e não tolera argumentos fracos.</p>
             <p><strong>Como lidar:</strong> Use lógica e bom senso, sendo sempre bem informado.</p>
-          </div></details>
-
-          <details class="source-topic"><summary>17. Tipos de Clientes: Detalhista</summary><div class="details-body">
-            <p><strong>Detalhista:</strong> Exige explicações detalhadas.</p>
+                </article>
+                <article class="slide-item" data-slide-index="16">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>17. Tipos de Clientes: Detalhista</h3>
+                  <p><strong>Detalhista:</strong> Exige explicações detalhadas.</p>
             <p><strong>Como lidar:</strong> Fale pausadamente e com clareza, sem se prender a detalhes desnecessários.</p>
-          </div></details>
-
-          <details class="source-topic"><summary>18. Tipos de Clientes: Agressivo</summary><div class="details-body">
-            <p><strong>Agressivo:</strong> Gosta de discutir e criticar abertamente.</p>
+                </article>
+                <article class="slide-item" data-slide-index="17">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 1</span>
+                  <h3>18. Tipos de Clientes: Agressivo</h3>
+                  <p><strong>Agressivo:</strong> Gosta de discutir e criticar abertamente.</p>
             <p><strong>Como lidar:</strong> Deixe o cliente desabafar e use frases que acalmam, como "Entendo como se sente" ou "Vamos resolver isso juntos."</p>
-          </div></details>
-
-          <div class="source-chapter-heading"><h4>Atendimento ao cliente · Módulo 2</h4></div>
-
-          <details class="source-topic"><summary>19. Atendimento ao cliente · Mód. 2</summary><div class="details-body">
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="18">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 2</span>
+                  <h3>19. Atendimento ao cliente · Mód. 2</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-19.png" alt="Slide 19: Atendimento ao Cliente Mód. 2">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>20. Atenda o mais rápido possível</summary><div class="details-body">
-            <p>Imagine que você está com um problema em um produto que comprou, liga no atendimento da empresa e precisa ficar horas esperando por atendimento?!</p>
-            <p>A cada hora sua insatisfação provavelmente aumentaria...</p>
-            <p>Com um atendimento ágil, evitamos que os clientes fiquem impacientes, tornando mais simples o contato e resolução das dificuldades do mesmo.</p>
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="19">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 2</span>
+                  <h3>20. Atenda o mais rápido possível</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-20.png" alt="Slide 20: Atenda o mais rápido possível">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>21. Apresente-se</summary><div class="details-body">
-            <p>Seu cliente precisa saber com quem está falando!</p>
+                </article>
+                <article class="slide-item" data-slide-index="20">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 2</span>
+                  <h3>21. Apresente-se</h3>
+                  <p>Seu cliente precisa saber com quem está falando!</p>
             <p>“Ateky internet, bom dia! Com quem eu falo? Certo XX, meu nome é XX. No que posso lhe ajudar hoje?”</p>
-          </div></details>
-
-          <details class="source-topic"><summary>22. Tenha empatia, se coloque no lugar dele</summary><div class="details-body">
-            <p>TENHA EMPATIA, SE COLOQUE NO LUGAR DELE...</p>
-            <p>Ao invés disso, faça dessa forma:</p>
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="21">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 2</span>
+                  <h3>22. Tenha empatia, se coloque no lugar dele</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-22.png" alt="Slide 22: Tenha empatia, se coloque no lugar dele">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>Exemplo de empatia no atendimento (Alessandro)</summary><div class="details-body">
-            <p>“Nossa Alessandro, te peço mil desculpas por todo o transtorno que você possa ter enfrentado, estou aqui para resolver da melhor forma possível! Você poderia me contar o que está acontecendo?”</p>
-            <p>“Realmente Alessandro, no seu lugar eu também estaria insatisfeito com a situação. Mas é para isso que estou aqui, pode ter certeza que vou resolver da melhor forma possível!”</p>
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="22">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 2</span>
+                  <h3>Exemplo de empatia no atendimento (Alessandro)</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-23.png" alt="Slide 23: Exemplo de atendimento empático ao Alessandro">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>24. Preste atenção no seu tom de voz</summary><div class="details-body">
-            <p>O tom de voz pode influenciar a forma como a mensagem é percebida e compreendida pelo cliente.</p>
+                </article>
+                <article class="slide-item" data-slide-index="23">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 2</span>
+                  <h3>24. Preste atenção no seu tom de voz</h3>
+                  <p>O tom de voz pode influenciar a forma como a mensagem é percebida e compreendida pelo cliente.</p>
             <p>Falar de forma monótona, por exemplo, pode fazer com que o cliente perca totalmente o interesse no que está sendo dito, já que a tendência não é que as pessoas se esforcem para entender o que está sendo falado, mas sim que se dispersem.</p>
             <p class="icon-heading"><svg class="ui-icon ui-icon-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg> Monótono</p>
             <p class="icon-heading"><svg class="ui-icon ui-icon-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> Confiante</p>
             <p class="icon-heading"><svg class="ui-icon ui-icon-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> Expressivo</p>
-          </div></details>
-
-          <details class="source-topic"><summary>25. Linguagem apropriada</summary><div class="details-body">
-            <p>Se o cliente ligou, faça de tudo para que a solicitação seja concluída por ligação, já que este é o meio pelo qual o cliente tem preferência.</p>
-            <p>Se o cliente está se comunicando por áudios, provavelmente esta é a forma com a qual ele quer ser atendido.</p>
-            <p>Devemos considerar que possuímos muitos clientes que não sabem ler ou escrever, então fique sempre atento aos sinais que seu cliente está passando.</p>
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="24">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 2</span>
+                  <h3>25. Linguagem apropriada</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-25.png" alt="Slide 25: Linguagem apropriada">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>26. Cuide da sua escrita</summary><div class="details-body">
-            <p>Erros gramaticais destroem a credibilidade da empresa. Muitos clientes deixam de responder por associarem falhas de escrita a tentativas de golpe.</p>
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="25">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 2</span>
+                  <h3>26. Cuide da sua escrita</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-26.png" alt="Slide 26: Cuide da sua escrita">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>27. Exemplos de escrita no atendimento</summary><div class="details-body">
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="26">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 2</span>
+                  <h3>27. Exemplos de escrita no atendimento</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-27.png" alt="Slide 27: Exemplos práticos de escrita no atendimento">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>28. Cuide da sua escrita: expressões a evitar</summary><div class="details-body">
-            <p>“Não”, “não sei”, “não temos”, “isso não é comigo”, “não posso fazer nada”. Elimine essas expressões de seu roteiro de atendimento!</p>
-            <p>Utilize um vocabulário adequado, sempre evitando o uso de gírias ou palavras de baixo calão.</p>
-            <p>Não fale no diminutivo, isto causa uma sensação de falta de credibilidade e desleixo!</p>
-            <p>Ao escrever em caps lock podemos dar a impressão de estar gritando com o cliente, então tome cuidado.</p>
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="27">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 2</span>
+                  <h3>28. Cuide da sua escrita: expressões a evitar</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-28.png" alt="Slide 28: Expressões e posturas a evitar na escrita">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>30. Avise antes de redirecionar ou colocar em espera</summary><div class="details-body">
-            <p>“Você consegue aguardar mais um momento em linha? Estou lhe transferindo para o setor responsável.”</p>
-            <p>“Certo, já estou verificando o que pode ter acontecido, minha ligação ficará muda, mas se precisar é só me chamar, estarei aqui com você.”</p>
-            <p>Se retrate quando demorar a dar um retorno.</p>
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="28">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 2</span>
+                  <h3>30. Avise antes de redirecionar ou colocar em espera</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-30.png" alt="Slide 30: Avise antes de redirecionar ou colocar em espera">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>31. Apresentação de Ferramentas Internas</summary><div class="details-body">
-            <p>Apresentação de Ferramentas Internas</p>
-            <figure class="original-slide-figure">
+                </article>
+                <article class="slide-item" data-slide-index="29">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 2</span>
+                  <h3>31. Apresentação de Ferramentas Internas</h3>
+                  <figure class="original-slide-figure">
               <img class="original-slide-image" src="assets/images/atendimento/slide-31.png" alt="Slide 31: Apresentação de Ferramentas Internas">
             </figure>
-          </div></details>
-
-          <details class="source-topic"><summary>32. Boa jornada!</summary><div class="details-body">
-            <p>Boa jornada!</p>
-          </div></details>
-        </article>
+                </article>
+                <article class="slide-item" data-slide-index="30">
+                  <span class="slide-kicker">Atendimento ao cliente · Módulo 2</span>
+                  <h3>32. Boa jornada!</h3>
+                  <p>Boa jornada!</p>
+                </article>
+                </div>
+              </div>
+            </div>
+            <button class="slide-nav-btn" data-slide-next type="button" aria-label="Próximo slide">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+          </div>
+          <div class="slide-hint">Use as setas ← → ou arraste o slide com o mouse para avançar</div>
+        </section>
 
         <article class="section-card activity" id="a-dinamica">
           <span class="activity-label">Dinâmica de atendimento · pratique em dupla</span>
@@ -1104,6 +2427,18 @@
           <button class="button complete-button" type="button" data-complete="informatica" aria-pressed="false">Marcar apresentação como concluída</button>
         </div>
 
+        <div class="module-hero-card">
+          <div>
+            <div class="eyebrow">APRENDA PARA ENSINAR · INFORMÁTICA</div>
+            <h3>Entenda o computador<br><span class="accent">para orientar com segurança.</span></h3>
+            <p>Conheça os componentes básicos, entenda a função de cada um e saiba quando encaminhar uma dúvida técnica.</p>
+            <div class="flow">Vídeo → Conceitos → Prática → Aprendizado</div>
+          </div>
+          <div class="module-hero-logo-wrap">
+            <img class="module-hero-logo" src="assets/images/logo-ateky.png" alt="Logo da Ateky">
+          </div>
+        </div>
+
         <article class="section-card" id="inf-video">
           <h3>Comece pelo vídeo</h3>
           <p class="lead">Assista ao vídeo “Partes básicas do computador”. Depois, explore cada componente com calma e use a atividade para conferir o que aprendeu.</p>
@@ -1131,12 +2466,12 @@
             <div class="mini-card">
               <h4 class="icon-heading"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg> Hardware</h4>
               <p>É a parte física — tudo que você pode tocar: teclado, mouse, monitor, placa-mãe, processador, memória RAM, HD, SSD e placa de vídeo.</p>
-              <img class="component-thumb" src="assets/images/informatica/hardware.jpg" alt="Hardware: circuitos e componentes físicos do computador">
+              <img class="component-thumb component-thumb-cover" src="assets/images/informatica/hardware.jpg" alt="Hardware: circuitos e componentes físicos do computador">
             </div>
             <div class="mini-card">
               <h4 class="icon-heading"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/><path d="M3 9h3"/><path d="M3 15h3"/><path d="M18 9h3"/><path d="M18 15h3"/></svg> Software</h4>
               <p>É a parte lógica: programas e sistemas que não podem ser tocados. Exemplos: Windows, Word, Chrome, antivírus e Spotify.</p>
-              <img class="component-thumb" src="assets/images/informatica/software.jpg" alt="Software: aplicativos e serviços digitais">
+              <img class="component-thumb component-thumb-cover" src="assets/images/informatica/software.jpg" alt="Software: aplicativos e serviços digitais">
             </div>
             <div class="mini-card">
               <h4 class="icon-heading"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></svg> CPU (processador)</h4>
@@ -1161,12 +2496,12 @@
             <div class="mini-card">
               <h4 class="icon-heading"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg> Sistema operacional</h4>
               <p>Software que gerencia o hardware e os demais programas e permite usar o computador. Exemplos: Windows 10/11, macOS, Linux, Android e iOS.</p>
-              <img class="component-thumb" src="assets/images/informatica/sistema-operacional.png" alt="Sistemas operacionais: Windows, macOS, Android e Linux">
+              <img class="component-thumb component-thumb-cover" src="assets/images/informatica/sistema-operacional.png" alt="Sistemas operacionais: Windows, macOS, Android e Linux">
             </div>
             <div class="mini-card">
               <h4 class="icon-heading"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg> Drivers</h4>
               <p>Softwares que permitem ao sistema operacional comunicar-se com dispositivos de hardware, como impressora, placa de vídeo e rede.</p>
-              <img class="component-thumb" src="assets/images/informatica/drivers.jpg" alt="Gerenciamento e atualização de drivers do sistema">
+              <img class="component-thumb component-thumb-cover" src="assets/images/informatica/drivers.png" alt="Gerenciamento e atualização de drivers do sistema">
             </div>
           </div>
         </article>
@@ -1213,11 +2548,12 @@
     const tabs = [...document.querySelectorAll("[data-module]")];
     const presentationContent = {
       integracao: {
-        kicker: "APRENDA A CULTURA ATEKY · INTEGRAÇÃO",
-        title: "Conheça a Ateky",
-        accent: "e faça parte dessa história.",
-        heroDescription: "Uma jornada para conhecer nossa história, nossos valores e o jeito humano de criar conexões com as pessoas.",
-        flow: "História → Valores → Pertencimento",
+        kicker: "APRESENTAÇÃO OFICIAL · ATEKY",
+        title: "Integração de novos colaboradores",
+        accent: "conheça a Ateky e faça parte dessa história.",
+        heroDescription: "Conheça nossa trajetória, propósito, valores, benefícios, normas e tudo o que faz parte do seu dia a dia na empresa.",
+        flow: "Boas-vindas → História & Estrutura → Cultura, Normas & Benefícios → Prova",
+        showSlideBadges: true,
       },
       atendimento: {
         kicker: "APRENDA A CONECTAR · ATENDIMENTO",
@@ -1225,6 +2561,7 @@
         accent: "conduz à solução certa.",
         heroDescription: "Pratique a escuta, a empatia e uma comunicação clara para transformar cada contato em uma boa experiência.",
         flow: "Escuta → Empatia → Clareza → Solução",
+        showSlideBadges: false,
       },
       informatica: {
         kicker: "APRENDA PARA ENSINAR · INFORMÁTICA",
@@ -1232,6 +2569,7 @@
         accent: "para orientar com segurança.",
         heroDescription: "Conheça os componentes básicos, entenda a função de cada um e saiba quando encaminhar uma dúvida técnica.",
         flow: "Vídeo → Conceitos → Prática → Aprendizado",
+        showSlideBadges: false,
       }
     };
     const completed = new Set();
@@ -1239,12 +2577,13 @@
       const topics = [...container.querySelectorAll(".source-topic")];
       const toggleBtn = container.querySelector(".source-toggle");
       if (!toggleBtn || !topics.length) return;
+      const hasCustomDefault = topics.some((t) => t.dataset.defaultOpen === "true");
       const updateToggle = () => {
         const allOpen = topics.every((topic) => topic.open);
         toggleBtn.textContent = allOpen ? "Recolher todos os tópicos" : "Expandir todos os tópicos";
       };
       topics.forEach((topic) => {
-        topic.open = true;
+        topic.open = hasCustomDefault ? topic.dataset.defaultOpen === "true" : true;
         topic.addEventListener("toggle", updateToggle);
       });
       toggleBtn.addEventListener("click", () => {
@@ -1256,6 +2595,14 @@
     });
 
     function updateProgress() {
+      const count = completed.size;
+      const total = tabs.length || 3;
+      const label = document.querySelector("#progress-label");
+      const fill = document.querySelector("#progress-fill");
+      const track = document.querySelector(".progress-track");
+      if (label) label.textContent = `${count} de ${total}`;
+      if (fill) fill.style.width = `${(count / total) * 100}%`;
+      if (track) track.setAttribute("aria-valuenow", String(count));
       document.querySelectorAll("[data-complete]").forEach((button) => {
         const isComplete = completed.has(button.dataset.complete);
         button.setAttribute("aria-pressed", String(isComplete));
@@ -1276,11 +2623,21 @@
       document.querySelector("#hero-title-accent").textContent = presentation.accent;
       document.querySelector("#hero-description").textContent = presentation.heroDescription;
       document.querySelector("#hero-flow").textContent = presentation.flow;
+      const modLabel = document.querySelector("#hero-module-label");
+      if (modLabel) {
+        const labels = {
+          integracao: "Módulo 01 · Integração",
+          atendimento: "Módulo 02 · Atendimento",
+          informatica: "Módulo 03 · Informática"
+        };
+        modLabel.textContent = labels[name] || "";
+      }
+      if (slideBadgesEl) slideBadgesEl.hidden = !presentation.showSlideBadges;
       if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        document.querySelectorAll(".hero-content, .hero-logo-scene").forEach((column, index) => {
-          column.animate([{ opacity: 0 }, { opacity: 1 }], {
-            duration: 650,
-            delay: index * 180,
+        document.querySelectorAll(".hero-text-wrapper, .premium-depth-card").forEach((el, index) => {
+          el.animate([{ opacity: 0 }, { opacity: 1 }], {
+            duration: 550,
+            delay: index * 120,
             easing: "ease-out"
           });
         });
@@ -1386,9 +2743,285 @@
       }
     }
 
+    const slideBadgesEl = document.querySelector("#hero-slide-badges");
+
+    function initSlideDeck(deck) {
+      const track = deck.querySelector(".slide-track");
+      const viewport = deck.querySelector(".slide-viewport");
+      const prevBtn = deck.querySelector("[data-slide-prev]");
+      const nextBtn = deck.querySelector("[data-slide-next]");
+      const counter = deck.querySelector("[data-slide-counter]");
+      const dropdown = deck.querySelector(".slide-dropdown");
+      const dropBtn = deck.querySelector(".slide-dropdown-btn");
+      const dropLabel = deck.querySelector(".slide-dropdown-label");
+      const dropMenu = deck.querySelector(".slide-dropdown-menu");
+      const presentBtn = deck.querySelector(".slide-present-btn");
+      const items = track ? [...track.querySelectorAll(".slide-item")] : [];
+      if (!viewport || !items.length) return;
+
+      let current = 0;
+
+      if (dropMenu) {
+        dropMenu.replaceChildren(...items.map((item, idx) => {
+          const opt = document.createElement("button");
+          opt.type = "button";
+          opt.className = "slide-dropdown-option";
+          opt.dataset.index = String(idx);
+          const heading = item.querySelector("h3")?.textContent?.trim() || `Slide ${idx + 1}`;
+          opt.textContent = heading;
+          opt.addEventListener("click", () => {
+            goTo(idx);
+            dropMenu.hidden = true;
+            dropBtn.setAttribute("aria-expanded", "false");
+          });
+          return opt;
+        }));
+      }
+
+      if (dropBtn && dropMenu) {
+        dropBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const willOpen = dropMenu.hidden;
+          dropMenu.hidden = !willOpen;
+          dropBtn.setAttribute("aria-expanded", String(willOpen));
+        });
+        document.addEventListener("click", (e) => {
+          if (dropdown && !dropdown.contains(e.target)) {
+            dropMenu.hidden = true;
+            dropBtn.setAttribute("aria-expanded", "false");
+          }
+        });
+      }
+
+      function fitActiveSlide() {
+        items.forEach((item) => {
+          item.style.fontSize = "";
+        });
+        if (!deck.classList.contains("is-presentation-mode")) return;
+        const activeItem = items[current];
+        if (!activeItem) return;
+        let size = 16;
+        activeItem.style.fontSize = `${size}px`;
+        while (activeItem.scrollHeight > activeItem.clientHeight + 2 && size > 9) {
+          size -= 0.5;
+          activeItem.style.fontSize = `${size}px`;
+        }
+      }
+
+      function goTo(index) {
+        current = Math.max(0, Math.min(items.length - 1, index));
+        track.style.transition = "transform .36s cubic-bezier(.22, .61, .36, 1)";
+        track.style.transform = `translateX(-${current * 100}%)`;
+        if (counter) counter.textContent = `Slide ${current + 1} de ${items.length}`;
+        if (prevBtn) prevBtn.disabled = current === 0;
+        if (nextBtn) nextBtn.disabled = current === items.length - 1;
+        if (dropLabel) {
+          const heading = items[current].querySelector("h3")?.textContent?.trim() || `Slide ${current + 1}`;
+          dropLabel.textContent = heading;
+        }
+        if (dropMenu) {
+          dropMenu.querySelectorAll(".slide-dropdown-option").forEach((opt, i) => {
+            opt.setAttribute("aria-selected", String(i === current));
+          });
+        }
+        requestAnimationFrame(fitActiveSlide);
+      }
+
+      if (prevBtn) prevBtn.addEventListener("click", () => goTo(current - 1));
+      if (nextBtn) nextBtn.addEventListener("click", () => goTo(current + 1));
+      viewport.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") { e.preventDefault(); goTo(current - 1); }
+        if (e.key === "ArrowRight") { e.preventDefault(); goTo(current + 1); }
+      });
+
+      let dragging = false, startX = 0, deltaX = 0;
+      viewport.addEventListener("pointerdown", (e) => {
+        if (e.target.closest("a, button, select, input")) return;
+        dragging = true;
+        startX = e.clientX;
+        deltaX = 0;
+        viewport.classList.add("is-dragging");
+        track.style.transition = "none";
+        viewport.setPointerCapture(e.pointerId);
+      });
+      viewport.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+        deltaX = e.clientX - startX;
+        const pct = (deltaX / Math.max(1, viewport.clientWidth)) * 100;
+        track.style.transform = `translateX(calc(-${current * 100}% + ${pct}%))`;
+      });
+      const endDrag = () => {
+        if (!dragging) return;
+        dragging = false;
+        viewport.classList.remove("is-dragging");
+        if (deltaX < -55 && current < items.length - 1) goTo(current + 1);
+        else if (deltaX > 55 && current > 0) goTo(current - 1);
+        else goTo(current);
+      };
+      viewport.addEventListener("pointerup", endDrag);
+      viewport.addEventListener("pointercancel", endDrag);
+
+      if (presentBtn) {
+        const setPresentation = (active) => {
+          deck.classList.toggle("is-presentation-mode", active);
+          document.documentElement.classList.toggle("presentation-active", active);
+          document.body.classList.toggle("presentation-active", active);
+          presentBtn.setAttribute("aria-pressed", String(active));
+          presentBtn.innerHTML = active
+            ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/></svg> Sair da apresentação'
+            : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg> Modo apresentação';
+          requestAnimationFrame(fitActiveSlide);
+        };
+        presentBtn.addEventListener("click", () => setPresentation(!deck.classList.contains("is-presentation-mode")));
+        window.addEventListener("resize", () => {
+          if (deck.classList.contains("is-presentation-mode")) fitActiveSlide();
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && deck.classList.contains("is-presentation-mode")) setPresentation(false);
+        });
+      }
+
+      goTo(0);
+    }
+
+    function initCinematicHero() {
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const topbar = document.querySelector("#inicio");
+      const heroEl = document.querySelector("#cinematic-hero");
+      const mainCard = document.querySelector("#cinematic-card");
+      const mockup = document.querySelector("#iphone-mockup");
+      const ctaBtn = document.querySelector("#cta-to-course");
+      const scrollToCourse = () => document.querySelector("#curso")?.scrollIntoView({ behavior: "smooth" });
+      if (ctaBtn) ctaBtn.addEventListener("click", scrollToCourse);
+
+      const updateTopbarVisibility = () => {
+        if (!topbar) return;
+        if (heroEl.style.display === "none") {
+          topbar.classList.add("is-visible");
+          return;
+        }
+        const courseTop = document.querySelector("#curso")?.getBoundingClientRect().top ?? 999;
+        topbar.classList.toggle("is-visible", courseTop <= window.innerHeight * 0.65);
+      };
+      window.addEventListener("scroll", updateTopbarVisibility, { passive: true });
+      updateTopbarVisibility();
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          if (window.scrollY < (heroEl?.offsetHeight || 600)) scrollToCourse();
+        });
+      });
+
+      if (!heroEl || !mainCard || !mockup || reducedMotion) return;
+
+      let rafId = 0;
+      window.addEventListener("mousemove", (e) => {
+        if (window.scrollY > window.innerHeight * 6) return;
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          const rect = mainCard.getBoundingClientRect();
+          mainCard.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+          mainCard.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+          const xVal = (e.clientX / window.innerWidth - 0.5) * 2;
+          const yVal = (e.clientY / window.innerHeight - 0.5) * 2;
+          if (window.gsap) {
+            window.gsap.to(mockup, {
+              rotationY: xVal * 12,
+              rotationX: -yVal * 12,
+              ease: "power3.out",
+              duration: 1.1
+            });
+          }
+        });
+      });
+
+      if (window.gsap && window.ScrollTrigger) {
+        const isMobile = window.innerWidth < 768;
+        const gsap = window.gsap;
+
+        if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+        window.scrollTo(0, 0);
+
+        gsap.set(".hero-text-wrapper", { opacity: 1, autoAlpha: 1, scale: 1, filter: "blur(0px)" });
+        gsap.set(".text-track", { autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)" });
+        gsap.set(".text-days", { autoAlpha: 1, clipPath: "inset(0 0% 0 0)" });
+        gsap.set(".main-card", { y: window.innerHeight + 200, autoAlpha: 1 });
+        gsap.set([".card-left-text", ".card-right-text", ".mockup-scroll-wrapper", ".floating-badge", ".phone-widget"], { autoAlpha: 0 });
+
+        gsap.from(".text-track", { duration: 0.9, y: 26, ease: "expo.out" });
+        gsap.fromTo(".text-days",
+          { clipPath: "inset(0 100% 0 0)" },
+          { clipPath: "inset(0 0% 0 0)", duration: 0.95, delay: 0.15, ease: "power3.out" }
+        );
+
+        const scrollTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: heroEl,
+            start: "top top",
+            end: "+=2800",
+            pin: true,
+            scrub: 1,
+            anticipatePin: 1,
+            onLeave: (self) => {
+              self.kill(true);
+              heroEl.style.display = "none";
+              window.scrollTo({ top: 0, behavior: "instant" });
+              updateTopbarVisibility();
+              window.ScrollTrigger.refresh();
+            }
+          }
+        });
+
+        scrollTl
+          .fromTo(".hero-text-wrapper",
+            { scale: 1, filter: "blur(0px)", opacity: 1 },
+            { scale: 1.12, filter: "blur(18px)", opacity: 0.08, ease: "power2.inOut", duration: 1.6 },
+            0
+          )
+          .fromTo(".bg-grid-theme",
+            { scale: 1, opacity: 0.45 },
+            { scale: 1.12, opacity: 0.12, ease: "power2.inOut", duration: 1.6 },
+            0
+          )
+          .to(".main-card", { y: 0, ease: "power3.inOut", duration: 1.6 }, 0)
+          .to(".main-card", { width: "100%", height: "100%", borderRadius: "0px", ease: "power3.inOut", duration: 1.2 })
+          .fromTo(".mockup-scroll-wrapper",
+            { y: 240, z: -400, rotationX: 45, rotationY: -25, autoAlpha: 0, scale: 0.65 },
+            { y: 0, z: 0, rotationX: 0, rotationY: 0, autoAlpha: 1, scale: 1, ease: "expo.out", duration: 2.0 }, "-=0.7"
+          )
+          .fromTo(".phone-widget", { y: 36, autoAlpha: 0, scale: 0.95 }, { y: 0, autoAlpha: 1, scale: 1, stagger: 0.14, ease: "back.out(1.2)", duration: 1.3 }, "-=1.2")
+          .to(".progress-ring", { strokeDashoffset: 40, duration: 1.6, ease: "power3.inOut" }, "-=1.0")
+          .to(".counter-val", { innerHTML: 25, snap: { innerHTML: 1 }, duration: 1.6, ease: "expo.out" }, "-=1.6")
+          .fromTo(".floating-badge", { y: 90, autoAlpha: 0, scale: 0.75, rotationZ: -8 }, { y: 0, autoAlpha: 1, scale: 1, rotationZ: 0, ease: "back.out(1.5)", duration: 1.3, stagger: 0.2 }, "-=1.6")
+          .fromTo(".card-left-text", { x: -45, autoAlpha: 0 }, { x: 0, autoAlpha: 1, ease: "power4.out", duration: 1.3 }, "-=1.3")
+          .fromTo(".card-right-text", { x: 45, autoAlpha: 0, scale: 0.82 }, { x: 0, autoAlpha: 1, scale: 1, ease: "expo.out", duration: 1.3 }, "<")
+          .to({}, { duration: 1.4 })
+          .set(".hero-text-wrapper", { autoAlpha: 0 })
+          .to([".mockup-scroll-wrapper", ".floating-badge", ".card-left-text", ".card-right-text"], {
+            scale: 0.9, y: -35, z: -180, autoAlpha: 0, ease: "power3.in", duration: 1.0, stagger: 0.05
+          })
+          .to(".main-card", {
+            width: isMobile ? "92vw" : "85vw",
+            height: isMobile ? "92vh" : "85vh",
+            borderRadius: isMobile ? "32px" : "40px",
+            ease: "expo.inOut",
+            duration: 1.2
+          })
+          .to(".main-card", { y: -window.innerHeight - 300, ease: "power3.in", duration: 1.1 });
+      }
+    }
+
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+    window.addEventListener("beforeunload", () => window.scrollTo(0, 0));
+
+    document.querySelectorAll(".slide-deck-section").forEach(initSlideDeck);
     selectModule("integracao");
     updateProgress();
-    window.addEventListener("load", initWireScrollTrigger);
+    window.addEventListener("load", () => {
+      initWireScrollTrigger();
+      initCinematicHero();
+    });
   </script>
 </body>
 </html>
